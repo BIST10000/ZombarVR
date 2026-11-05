@@ -40,6 +40,42 @@ namespace Zombar
         public bool LeftArmDisabled { get { return leftArmDisabled; } }
         public bool GameOver => gameOver;
         public BarHud Hud { get; private set; }
+        public int PhysicalQuality => Mathf.Clamp(55 + qualityLevel * 12, 0, 100);
+        public void Tell(string message) => Notify(message);
+        public bool TakePhysicalStock(PropKind ingredient)
+        {
+            if (gameOver) return false;
+            if (ingredient == PropKind.Eye && eyes > 0) { eyes--; return true; }
+            if (ingredient == PropKind.Flesh && flesh > 0) { flesh--; return true; }
+            if (ingredient == PropKind.BloodBottle && blood > 0) { blood--; return true; }
+            return false;
+        }
+        public void PhysicalServe(string id, int recipe, int quality)
+        {
+            if (gameOver || recipe < 0 || recipe >= recipes.Length) return;
+            readyDrink = recipes[recipe]; drinkQuality = quality;
+            ServePatron(id); RefreshHud();
+        }
+        public void PhysicalPunch(string id) { if (!gameOver) PunchPatron(id); }
+        public void PhysicalHarvest(string id) { if (!gameOver) HarvestCorpse(id); }
+        public void PhysicalPump() { if (!gameOver) PumpFlood(); }
+        public void PhysicalHeal() { if (!gameOver) RestoreBody(); }
+        public void PhysicalDrawBlood() { if (!gameOver) DrawHelperBlood(); }
+        public void PhysicalWipe() { if (!gameOver) { barDamage = Mathf.Max(0, barDamage - 1); Notify("Стойка вытерта."); } }
+        public bool PhysicalExtinguish(Vector3 pourPosition)
+        {
+            if (gameOver || !fireActive || blood < 1) return false;
+            var fire = GameObject.Find("ПОЖАР");
+            if (fire == null || Vector3.Distance(pourPosition, fire.transform.position + Vector3.up * 0.4f) > 0.6f) return false;
+            ExtinguishFire(); return true;
+        }
+        public void PhysicalPurchase(BarAction action)
+        {
+            if (gameOver) return;
+            if (action == BarAction.UpgradeQuality) UpgradeQuality();
+            else if (action == BarAction.UpgradeStrength) UpgradeStrength();
+            else if (action == BarAction.BuyIceBox || action == BarAction.BuySprinkler || action == BarAction.BuyDrain) BuyEquipment(action);
+        }
 
         [Header("Starting stock")]
         [SerializeField] private int blood = 2;
@@ -124,7 +160,7 @@ namespace Zombar
                 foreach (Transform part in helper.transform)
                     if (part.name.Contains("глаз") || part.name.Contains("Глаз")) { helperEye = part; break; }
             }
-            Notify("Выберите рецепт на стойке, затем отдайте заказ клиенту.");
+            Notify("Возьмите ингредиенты рукой, смешайте в шейкере и передайте стакан клиенту.");
             SpawnPatron(false);
             SpawnPatron(false);
             RefreshHud();
@@ -163,20 +199,6 @@ namespace Zombar
                 }
             }
 
-            if (!gameOver)
-            {
-                if (trader == null)
-                {
-                    traderIn -= dt;
-                    if (traderIn <= 0f)
-                        SpawnTrader();
-                }
-                else if (Time.time >= trader.leavesAt)
-                {
-                    CloseTrader(false);
-                }
-            }
-
             if (Hud != null && hudIn <= 0f)
             {
                 RefreshHud();
@@ -184,8 +206,6 @@ namespace Zombar
             }
             hudIn -= dt;
 
-            if (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame && gameOver)
-                RestartRound();
         }
 
         public void Interact(BarTarget target)
@@ -342,9 +362,7 @@ namespace Zombar
                 patron.angry = false;
                 if (patron.serveTarget != null) patron.serveTarget.gameObject.SetActive(false);
                 if (patron.fightTarget != null) patron.fightTarget.gameObject.SetActive(false);
-                patron.root.GetComponent<BarActorVisual>().defeated = true;
-                patron.harvestTarget = CreateTarget("ДОБЫТЬ", BarAction.HarvestCorpse, patron.id, patron.root.transform.position + Vector3.right * 0.7f + Vector3.up * 0.25f,
-                    new Color(0.36f, 0.18f, 0.23f), new Vector3(0.54f, 0.19f, 0.1f));
+                patron.root.GetComponent<PhysicalPatron>().Defeat();
                 Notify("Дебошир повержен. Его тело можно переработать в ингредиенты.");
             }
             else
@@ -379,74 +397,39 @@ namespace Zombar
                 else rightSlotUsed = true;
             }
             if (leftSlotUsed && rightSlotUsed) return;
-            float x = leftSlotUsed ? 1.45f : -1.45f;
-            Vector3 position = new Vector3(x, 0f, 2.45f);
+            float x = leftSlotUsed ? 0.72f : -0.72f;
+            Vector3 position = new Vector3(x, 0f, 0.55f);
             GameObject body = CreatePatronModel(id, position, giant);
             Patron patron = new Patron
             {
                 id = id,
                 recipe = recipes[recipe],
                 root = body,
-                patience = giant ? 75f : Random.Range(44f, 56f),
+                patience = giant ? 160f : Random.Range(120f, 150f),
                 health = 2,
                 giant = giant,
                 angry = false,
                 attackIn = 6f
             };
-            patron.serveTarget = CreateTarget("ОТДАТЬ", BarAction.ServePatron, id,
-                position + new Vector3(0.45f, 0.66f, -0.5f), new Color(0.13f, 0.58f, 0.45f), new Vector3(0.55f, 0.18f, 0.1f));
-            patron.fightTarget = CreateTarget("УДАР", BarAction.PunchPatron, id,
-                position + new Vector3(-0.45f, 0.66f, -0.5f), new Color(0.75f, 0.25f, 0.24f), new Vector3(0.48f, 0.18f, 0.1f));
             patrons.Add(patron);
             UpdatePatronSign(patron);
         }
 
+        private bool nextPatronWearsHood;
         private GameObject CreatePatronModel(string id, Vector3 position, bool giant)
         {
-            GameObject root = new GameObject(giant ? "Титан-клиент" : "Зомби-клиент");
-            root.transform.position = position;
-            float scale = giant ? 1.38f : 1f;
-            Color skin = giant ? new Color(0.27f, 0.38f, 0.28f) : (Random.value > 0.5f ? zombieGreen : zombiePurple);
-            root.transform.localScale = Vector3.one * scale;
-            Color coat = giant ? new Color(0.18f, 0.13f, 0.2f) : new Color(0.13f, 0.18f, 0.23f);
-            Color brass = new Color(0.72f, 0.38f, 0.13f);
-            Color bone = new Color(0.78f, 0.71f, 0.51f);
-            CreatePrimitive("Пальто", PrimitiveType.Capsule, root.transform, new Vector3(0f, 0.91f, 0.04f), new Vector3(0.74f, 0.64f, 0.5f), coat);
-            CreatePrimitive("Воротник · левая пола", PrimitiveType.Cube, root.transform, new Vector3(-0.16f, 1.36f, -0.2f), new Vector3(0.26f, 0.32f, 0.065f), brass).transform.localRotation = Quaternion.Euler(0f, 0f, -24f);
-            CreatePrimitive("Воротник · правая пола", PrimitiveType.Cube, root.transform, new Vector3(0.16f, 1.36f, -0.2f), new Vector3(0.26f, 0.32f, 0.065f), new Color(0.34f, 0.23f, 0.38f)).transform.localRotation = Quaternion.Euler(0f, 0f, 24f);
-            CreatePrimitive("Ремень", PrimitiveType.Cube, root.transform, new Vector3(0f, 0.66f, -0.02f), new Vector3(0.66f, 0.1f, 0.47f), new Color(0.09f, 0.08f, 0.1f));
-            CreatePrimitive("Пряжка", PrimitiveType.Cube, root.transform, new Vector3(0f, 0.66f, -0.265f), new Vector3(0.16f, 0.13f, 0.035f), brass);
-            for (int button = 0; button < 3; button++)
-                CreatePrimitive("Пуговица", PrimitiveType.Sphere, root.transform, new Vector3(0.03f, 1.11f - button * 0.18f, -0.255f), new Vector3(0.055f, 0.055f, 0.035f), brass);
-            CreatePrimitive("Плечо · левая наплечная деталь", PrimitiveType.Sphere, root.transform, new Vector3(-0.47f, 1.26f, 0f), new Vector3(0.29f, 0.2f, 0.28f), new Color(0.3f, 0.2f, 0.34f));
-            CreatePrimitive("Плечо · правая наплечная деталь", PrimitiveType.Sphere, root.transform, new Vector3(0.47f, 1.26f, 0f), new Vector3(0.29f, 0.2f, 0.28f), new Color(0.3f, 0.2f, 0.34f));
-            CreatePrimitive("Лицо · голова", PrimitiveType.Sphere, root.transform, new Vector3(0f, 1.76f, 0f), new Vector3(0.66f, 0.67f, 0.62f), skin);
-            CreatePrimitive("Лицо · челюсть", PrimitiveType.Sphere, root.transform, new Vector3(0f, 1.49f, -0.13f), new Vector3(0.46f, 0.22f, 0.43f), skin);
-            CreatePrimitive("Лицо · нос", PrimitiveType.Sphere, root.transform, new Vector3(0f, 1.67f, -0.32f), new Vector3(0.13f, 0.2f, 0.12f), new Color(skin.r * 0.82f, skin.g * 0.82f, skin.b * 0.82f, 1f));
-            CreatePrimitive("Глазница · левая", PrimitiveType.Sphere, root.transform, new Vector3(-0.17f, 1.82f, -0.282f), new Vector3(0.17f, 0.16f, 0.065f), new Color(0.045f, 0.035f, 0.05f));
-            CreatePrimitive("Глазница · правая", PrimitiveType.Sphere, root.transform, new Vector3(0.17f, 1.82f, -0.282f), new Vector3(0.17f, 0.16f, 0.065f), new Color(0.045f, 0.035f, 0.05f));
-            CreatePrimitive("Глаз светящийся", PrimitiveType.Sphere, root.transform, new Vector3(-0.17f, 1.82f, -0.345f), new Vector3(0.092f, 0.09f, 0.045f), new Color(1f, 0.3f, 0.095f));
-            CreatePrimitive("Глаз светящийся", PrimitiveType.Sphere, root.transform, new Vector3(0.17f, 1.82f, -0.345f), new Vector3(0.062f, 0.075f, 0.04f), new Color(1f, 0.62f, 0.2f));
-            CreatePrimitive("Надбровная дуга · левая", PrimitiveType.Capsule, root.transform, new Vector3(-0.18f, 1.97f, -0.29f), new Vector3(0.23f, 0.055f, 0.055f), coat).transform.localRotation = Quaternion.Euler(0f, 0f, 8f);
-            CreatePrimitive("Надбровная дуга · правая", PrimitiveType.Capsule, root.transform, new Vector3(0.18f, 1.97f, -0.29f), new Vector3(0.23f, 0.055f, 0.055f), coat).transform.localRotation = Quaternion.Euler(0f, 0f, -8f);
-            CreatePrimitive("Рот · тёмная пасть", PrimitiveType.Cube, root.transform, new Vector3(0f, 1.44f, -0.335f), new Vector3(0.34f, 0.11f, 0.065f), new Color(0.12f, 0.025f, 0.035f));
-            for (int tooth = 0; tooth < 4; tooth++)
-                CreatePrimitive("Зуб", PrimitiveType.Cube, root.transform, new Vector3(-0.12f + tooth * 0.08f, 1.475f, -0.38f), new Vector3(0.05f, 0.045f, 0.025f), bone);
-            CreatePrimitive("Шрам", PrimitiveType.Cube, root.transform, new Vector3(0.28f, 1.68f, -0.285f), new Vector3(0.2f, 0.035f, 0.025f), new Color(0.43f, 0.12f, 0.14f)).transform.localRotation = Quaternion.Euler(0f, 0f, 27f);
-            GameObject leftArm = CreatePrimitive("Кожа · левая рука", PrimitiveType.Capsule, root.transform, new Vector3(-0.58f, 0.92f, 0f), new Vector3(0.22f, 0.58f, 0.22f), skin);
-            leftArm.transform.localRotation = Quaternion.Euler(0f, 0f, 18f);
-            GameObject rightArm = CreatePrimitive("Кожа · правая рука", PrimitiveType.Capsule, root.transform, new Vector3(0.58f, 0.92f, 0f), new Vector3(0.22f, 0.58f, 0.22f), skin);
-            rightArm.transform.localRotation = Quaternion.Euler(0f, 0f, -18f);
-            CreatePrimitive("Кожа · левая ладонь", PrimitiveType.Sphere, root.transform, new Vector3(-0.67f, 0.53f, -0.01f), new Vector3(0.2f, 0.2f, 0.18f), skin);
-            CreatePrimitive("Кожа · правая ладонь", PrimitiveType.Sphere, root.transform, new Vector3(0.67f, 0.53f, -0.01f), new Vector3(0.2f, 0.2f, 0.18f), skin);
-            CreatePrimitive("Знак · костяная брошь", PrimitiveType.Sphere, root.transform, new Vector3(-0.23f, 1.16f, -0.26f), new Vector3(0.12f, 0.14f, 0.055f), bone);
-            TextMesh sign = CreateText("Заказ", root.transform, new Vector3(0f, 2.34f, 0f), 0.1f, 40, Color.white);
-            sign.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
-            sign.alignment = TextAlignment.Center;
-            Patron patron = new Patron { id = id, sign = sign };
-            // Text is assigned to the real record in SpawnPatron after this temporary lookup.
+            var prefab = Resources.Load<GameObject>("PhysicalBar/" + (nextPatronWearsHood ? "PatronFemale" : "PatronMale"));
+            nextPatronWearsHood = !nextPatronWearsHood;
+            if (prefab == null) throw new System.InvalidOperationException("Run PhysicalBarSceneBuilder.Build before playing.");
+            var root = Instantiate(prefab, position, Quaternion.identity);
+            root.name = giant ? "Титан-клиент" : "Зомби-клиент";
+            root.transform.localScale *= giant ? 1.25f : 1f;
+            var actor = root.AddComponent<PhysicalPatron>();
+            actor.id = id; actor.giant = giant;
+            var sign = CreateText("Заказ", root.transform, new Vector3(0, giant ? 2.15f : 1.92f, 0), 0.03f, 40, Color.white);
+            var layout = sign.GetComponent<BarLabelLayout>();
+            layout.width = 0.7f; layout.height = 0.16f;
             pendingSigns[id] = sign;
-            root.AddComponent<BarActorVisual>();
             return root;
         }
 
@@ -468,8 +451,8 @@ namespace Zombar
 
         private void SetPatronLook(Patron patron, bool angry)
         {
-            var visual = patron.root.GetComponent<BarActorVisual>();
-            if (visual != null) visual.angry = angry;
+            var actor = patron.root.GetComponent<PhysicalPatron>();
+            if (actor != null) actor.SetAngry(angry);
             Renderer[] renderers = patron.root.GetComponentsInChildren<Renderer>();
             for (int i = 0; i < renderers.Length; i++)
             {
@@ -564,7 +547,7 @@ namespace Zombar
             if (playerHealth <= 0)
             {
                 gameOver = true;
-                Notify("Бар закрыт после трёх тяжёлых ударов. Нажмите R, чтобы начать смену заново.");
+                Notify("Бар закрыт после трёх тяжёлых ударов. Возьмите и встряхните колокольчик для новой смены.");
             }
         }
 
@@ -612,7 +595,7 @@ namespace Zombar
             {
                 floodActive = true;
                 floodPumps = 0;
-                MakeHazardVisual("ПОТОП", new Vector3(-3.45f, 0.12f, 0.65f), new Color(0.1f, 0.5f, 0.92f));
+                MakeHazardVisual("ПОТОП", new Vector3(-1.4f, 0.12f, -0.4f), new Color(0.1f, 0.5f, 0.92f));
                 Notify("Прорвало трубу! Трижды прокачайте ручной насос.");
             }
         }
@@ -622,7 +605,7 @@ namespace Zombar
             if (fireActive) return;
             fireActive = true;
             fireLeft = sprinkler ? 28f : 18f;
-            MakeHazardVisual("ПОЖАР", new Vector3(3.45f, 0.1f, 0.65f), new Color(1f, 0.23f, 0.04f));
+            MakeHazardVisual("ПОЖАР", new Vector3(1.35f, 0.65f, 0.1f), new Color(1f, 0.23f, 0.04f));
             BarAudio.Play("alarm");
             Notify("Пожар! Плесните кровью на огонь.");
         }
@@ -893,7 +876,7 @@ namespace Zombar
             if (rightArmDisabled) builder.Append("\nПравая рука отключена");
             if (leftArmDisabled) builder.Append("\nЛевая рука отключена");
             if (eyeInjured) builder.Append("\nЗрение сужено");
-            if (gameOver) builder.Append("\nСМЕНА ЗАКРЫТА · A / X на контроллере или R — заново");
+            if (gameOver) builder.Append("\nСМЕНА ЗАКРЫТА · встряхните колокольчик для новой смены");
             Hud.SetStatus(builder.ToString());
         }
 

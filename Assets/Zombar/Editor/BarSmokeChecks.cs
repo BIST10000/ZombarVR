@@ -23,6 +23,10 @@ namespace ZombarEditor
             var passed = new List<string>();
             try
             {
+                Check(UnityEngine.Object.FindObjectsByType<BarTarget>().Length == 0, "No legacy action buttons remain");
+                Check(PhysicalBar.Instance != null && BarProp.All.Count >= 12, "Physical workbench populated");
+                passed.Add("Physical workbench replaces all action buttons");
+                passed.Add(PhysicalInteractionChecks.Run());
                 game.RestartRound();
                 var patrons = (IList)Read(game, "patrons");
                 var first = patrons[0];
@@ -103,7 +107,7 @@ namespace ZombarEditor
                 Check(!game.GameOver && patrons.Count == 2, "new shift playable");
                 passed.Add("Game over and restart");
             }
-            finally { game.RestartRound(); }
+            finally { game.RestartRound(); PhysicalBar.Instance?.ResetProps(); }
             string result = "PASS " + passed.Count + " scenarios\n" + string.Join("\n", passed);
             System.IO.Directory.CreateDirectory("Builds/Validation");
             System.IO.File.WriteAllText("Builds/Validation/gameplay-checks.txt", result);

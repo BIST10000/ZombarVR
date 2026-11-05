@@ -6,73 +6,31 @@ using UnityEngine;
 
 namespace ZombarEditor
 {
-    [InitializeOnLoad]
     public static class BarBatchValidation
     {
-        private static double deadline;
-        private static int startFrame;
-        private static bool captured;
-        private static bool previousOptionsEnabled;
-        private static EnterPlayModeOptions previousOptions;
-
-        static BarBatchValidation()
-        {
-            if (!SessionState.GetBool("Zombar.Validation.Active", false)) return;
-            deadline = EditorApplication.timeSinceStartup + 120;
-            previousOptionsEnabled = SessionState.GetBool("Zombar.Validation.OptionsEnabled", false);
-            previousOptions = (EnterPlayModeOptions)SessionState.GetInt("Zombar.Validation.Options", 0);
-        }
-
         public static void Run()
         {
             Directory.CreateDirectory("Builds/Validation");
+            if (Array.IndexOf(Environment.GetCommandLineArgs(), "-refreshPortraits") >= 0)
+                PhysicalBarSceneBuilder.Build();
             QuestBuild.Configure();
             QuestBuild.PrepareScene();
-            previousOptionsEnabled = EditorSettings.enterPlayModeOptionsEnabled;
-            previousOptions = EditorSettings.enterPlayModeOptions;
-            SessionState.SetBool("Zombar.Validation.Active", true);
-            SessionState.SetBool("Zombar.Validation.OptionsEnabled", previousOptionsEnabled);
-            SessionState.SetInt("Zombar.Validation.Options", (int)previousOptions);
+            SessionState.SetBool("Zombar.Validation.OptionsEnabled", EditorSettings.enterPlayModeOptionsEnabled);
+            SessionState.SetInt("Zombar.Validation.Options", (int)EditorSettings.enterPlayModeOptions);
             EditorSettings.enterPlayModeOptionsEnabled = true;
             EditorSettings.enterPlayModeOptions = EnterPlayModeOptions.DisableDomainReload;
             Application.runInBackground = true;
-            deadline = EditorApplication.timeSinceStartup + 120;
             EditorApplication.EnterPlaymode();
-        }
-
-        private static void Tick()
-        {
-            try
-            {
-                if (EditorApplication.timeSinceStartup > deadline) throw new Exception("Play-mode validation timed out.");
-                EditorApplication.QueuePlayerLoopUpdate();
-                Application.runInBackground = true;
-                if (!Application.isPlaying || Zombar.ZombieBarGame.Instance == null) return;
-                if (startFrame == 0) { startFrame = Time.frameCount; return; }
-                if (Time.frameCount < startFrame + 10) return;
-                if (!captured)
-                {
-                    string result = BarSmokeChecks.Run();
-                    File.AppendAllText("Builds/Validation/gameplay-checks.txt", "\nFrames advanced: " + startFrame + " -> " + Time.frameCount);
-                    Debug.Log(result);
-                    captured = true;
-                    startFrame = Time.frameCount;
-                    return;
-                }
-                Capture();
-                Finish(0);
-            }
-            catch (Exception e)
-            {
-                File.WriteAllText("Builds/Validation/failure.txt", e.ToString());
-                Debug.LogException(e);
-                Finish(1);
-            }
         }
 
         private static void Capture()
         {
             Camera camera = Camera.main;
+            var metrics = new System.Text.StringBuilder();
+            metrics.AppendLine("Camera: " + camera.transform.position + "; FOV: " + camera.fieldOfView);
+            foreach (var prop in UnityEngine.Object.FindObjectsByType<Zombar.BarProp>())
+                metrics.AppendLine(prop.kind + ": " + prop.transform.position + "; collider: " + prop.GetComponent<Collider>().bounds.size);
+            File.WriteAllText("Builds/Validation/scene-metrics.txt", metrics.ToString());
             var target = new RenderTexture(1440, 900, 24);
             var previous = camera.targetTexture;
             var active = RenderTexture.active;
@@ -87,6 +45,7 @@ namespace ZombarEditor
                 image.ReadPixels(new Rect(0, 0, 1440, 900), 0, 0);
                 image.Apply();
                 File.WriteAllBytes("Builds/Validation/necro-pub.png", image.EncodeToPNG());
+                CapturePortrait(camera, target, image);
                 UnityEngine.Object.DestroyImmediate(image);
             }
             finally
@@ -98,13 +57,33 @@ namespace ZombarEditor
             }
         }
 
-        private static void Finish(int code)
+        private static void CapturePortrait(Camera player, RenderTexture target, Texture2D image)
         {
-            EditorApplication.update -= Tick;
-            SessionState.SetBool("Zombar.Validation.Active", false);
-            EditorSettings.enterPlayModeOptionsEnabled = previousOptionsEnabled;
-            EditorSettings.enterPlayModeOptions = previousOptions;
-            EditorApplication.Exit(code);
+            var patrons = UnityEngine.Object.FindObjectsByType<Zombar.PhysicalPatron>();
+            if (patrons.Length == 0) throw new InvalidOperationException("No patron in portrait capture.");
+            var patron = patrons[0];
+            var head = Array.Find(patron.GetComponentsInChildren<Transform>(), bone => bone.name == "Head");
+            if (head == null) throw new InvalidOperationException("Imported portrait is missing its head bone.");
+            var focus = head.position + Vector3.up * .18f;
+            var obj = new GameObject("Editorial camera");
+            var cam = obj.AddComponent<Camera>();
+            cam.CopyFrom(player);
+            cam.fieldOfView = 38;
+            cam.transform.position = focus + new Vector3(.32f,.08f,-.96f);
+            cam.transform.LookAt(focus);
+            cam.targetTexture = target;
+            var lettering = UnityEngine.Object.FindObjectsByType<TextMesh>();
+            foreach (var label in lettering) label.GetComponent<Renderer>().enabled = false;
+            cam.Render();
+            RenderTexture.active = target;
+            image.ReadPixels(new Rect(0,0,target.width,target.height),0,0);
+            image.Apply();
+            File.WriteAllBytes("Builds/Validation/cellar-in-game.png",image.EncodeToPNG());
+            foreach (var label in lettering) label.GetComponent<Renderer>().enabled = true;
+            cam.targetTexture = null;
+            UnityEngine.Object.DestroyImmediate(obj);
         }
+
     }
 }
+

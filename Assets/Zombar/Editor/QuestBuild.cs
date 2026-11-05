@@ -17,15 +17,8 @@ namespace ZombarEditor
         public static void PrepareScene()
         {
             var scene = EditorSceneManager.OpenScene("Assets/Scenes/ZombieBar.unity");
-            foreach (var text in UnityEngine.Object.FindObjectsByType<TextMesh>())
-            {
-                var layout = text.GetComponent<BarLabelLayout>();
-                if (layout == null) layout = text.gameObject.AddComponent<BarLabelLayout>();
-                var target = text.GetComponentInParent<BarTarget>();
-                layout.width = target != null ? target.transform.lossyScale.x * 0.88f : text.text.Contains("СМЕНА") ? 7f : 2.8f;
-                layout.height = target != null ? target.transform.lossyScale.y * 0.8f : 0.32f;
-                text.transform.rotation = Quaternion.identity;
-            }
+            if (UnityEngine.Object.FindAnyObjectByType<PhysicalBar>() == null)
+                throw new BuildFailedException("Build the physical bar scene first: НЕКРО-ПАБ/Построить физический бар.");
             EditorSceneManager.SaveScene(scene);
         }
 
@@ -63,7 +56,8 @@ namespace ZombarEditor
                 pipeline.supportsHDR = false;
                 pipeline.shadowDistance = 12f;
                 var serialized = new SerializedObject(pipeline);
-                serialized.FindProperty("m_AdditionalLightsRenderingMode").intValue = (int)LightRenderingMode.PerVertex;
+                serialized.FindProperty("m_AdditionalLightsRenderingMode").intValue = (int)LightRenderingMode.PerPixel;
+                serialized.FindProperty("m_AdditionalLightsPerObjectLimit").intValue = 3;
                 serialized.ApplyModifiedPropertiesWithoutUndo();
                 EditorUtility.SetDirty(pipeline);
             }
@@ -91,3 +85,4 @@ namespace ZombarEditor
         }
     }
 }
+

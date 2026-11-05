@@ -24,6 +24,14 @@ namespace Zombar
             status.resizeTextForBestFit = true;
             status.resizeTextMinSize = 16;
             status.resizeTextMaxSize = 23;
+            var ledger = new GameObject("Счёт и запасы на стене", typeof(RectTransform), typeof(Canvas));
+            ledger.GetComponent<Canvas>().renderMode = RenderMode.WorldSpace;
+            ledger.GetComponent<Canvas>().worldCamera = camera;
+            ledger.transform.position = new Vector3(0, 2.5f, 1.6f);
+            ledger.transform.localScale = Vector3.one * 0.0015f;
+            var panel = status.transform.parent.GetComponent<RectTransform>();
+            panel.SetParent(ledger.transform, false);
+            panel.anchoredPosition = Vector2.zero;
             message = Label(root.transform, "Событие", new Vector2(0, -180), new Vector2(900, 70), 25);
             message.color = new Color(1f, 0.82f, 0.46f);
             hint = Label(root.transform, "Действие", new Vector2(0, -255), new Vector2(960, 65), 21);

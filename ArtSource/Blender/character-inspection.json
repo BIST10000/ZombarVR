@@ -1,0 +1,81 @@
+{
+  "objects": [
+    {
+      "name": "CharacterArmature",
+      "type": "ARMATURE",
+      "dimensions": [
+        1.2944560050964355,
+        1.2084542512893677,
+        3.827218770980835
+      ],
+      "bones": [
+        "Bone",
+        "Foot.L",
+        "Foot.L_end",
+        "Body",
+        "Hips",
+        "Abdomen",
+        "Torso",
+        "Neck",
+        "Head",
+        "Head_end",
+        "Shoulder.L",
+        "UpperArm.L",
+        "LowerArm.L",
+        "Fist.L",
+        "Fist.L_end",
+        "Shoulder.R",
+        "UpperArm.R",
+        "LowerArm.R",
+        "Fist.R",
+        "Fist.R_end",
+        "UpperLeg.L",
+        "LowerLeg.L",
+        "LowerLeg.L_end",
+        "UpperLeg.R",
+        "LowerLeg.R",
+        "LowerLeg.R_end",
+        "PoleTarget.L",
+        "PoleTarget.L_end",
+        "Foot.R",
+        "Foot.R_end",
+        "PoleTarget.R",
+        "PoleTarget.R_end"
+      ]
+    },
+    {
+      "name": "Body",
+      "type": "MESH",
+      "dimensions": [
+        1.5256510972976685,
+        0.9931336641311646,
+        3.021078586578369
+      ],
+      "vertices": 2103,
+      "polygons": 2038,
+      "materials": [
+        "Skin",
+        "Clothes",
+        "Guts",
+        "Pants",
+        "DarkClothes",
+        "Bones",
+        "Brain",
+        "Face"
+      ]
+    }
+  ],
+  "actions": [
+    "CharacterArmature|CharacterArmature|Defeat",
+    "CharacterArmature|CharacterArmature|Idle",
+    "CharacterArmature|CharacterArmature|PickUp",
+    "CharacterArmature|CharacterArmature|Punch",
+    "CharacterArmature|CharacterArmature|RecieveHit",
+    "CharacterArmature|CharacterArmature|Shoot_OneHanded",
+    "CharacterArmature|CharacterArmature|SitDown",
+    "CharacterArmature|CharacterArmature|StandUp",
+    "CharacterArmature|CharacterArmature|Victory",
+    "CharacterArmature|CharacterArmature|Walk",
+    "CharacterArmature|CharacterArmature|Walk_Carry"
+  ]
+}
