@@ -1,0 +1,59 @@
+{
+  "models": [
+    {
+      "file": "Mutant.fbx",
+      "materials": [
+        {
+          "name": "mutant_M",
+          "albedo": "Mutant_mutant_M_albedo.png",
+          "normal": "Mutant_mutant_M_normal.png"
+        }
+      ]
+    },
+    {
+      "file": "Warzombie_F_Pedroso.fbx",
+      "materials": [
+        {
+          "name": "WorldWar_zombie_material",
+          "albedo": "Warzombie_F_Pedroso_WorldWar_zombie_material_albedo.png",
+          "normal": "Warzombie_F_Pedroso_WorldWar_zombie_material_normal.png"
+        }
+      ]
+    },
+    {
+      "file": "Yaku_J_Ignite.fbx",
+      "materials": [
+        {
+          "name": "yaku_zombie_material",
+          "albedo": "Yaku_J_Ignite_yaku_zombie_material_albedo.png",
+          "normal": "Yaku_J_Ignite_yaku_zombie_material_normal.png"
+        },
+        {
+          "name": "yifu",
+          "albedo": "Yaku_J_Ignite_yifu_albedo.png",
+          "normal": "Yaku_J_Ignite_yifu_normal.png"
+        }
+      ]
+    },
+    {
+      "file": "Zombiegirl_W_Kurniawan.fbx",
+      "materials": [
+        {
+          "name": "ZombieGirl_body_Material",
+          "albedo": "Zombiegirl_W_Kurniawan_ZombieGirl_body_Material_albedo.png",
+          "normal": "Zombiegirl_W_Kurniawan_ZombieGirl_body_Material_normal.png"
+        },
+        {
+          "name": "ZombieGirl_Material",
+          "albedo": "Zombiegirl_W_Kurniawan_ZombieGirl_Material_albedo.png",
+          "normal": "Zombiegirl_W_Kurniawan_ZombieGirl_Material_normal.png"
+        },
+        {
+          "name": "ZombieGirl_Material.001",
+          "albedo": "Zombiegirl_W_Kurniawan_ZombieGirl_Material.001_albedo.png",
+          "normal": "Zombiegirl_W_Kurniawan_ZombieGirl_Material.001_normal.png"
+        }
+      ]
+    }
+  ]
+}

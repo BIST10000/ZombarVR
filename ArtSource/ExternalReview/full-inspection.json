@@ -1,0 +1,375 @@
+[
+  {
+    "file": "Mutant.fbx",
+    "materials": [
+      {
+        "name": "mutant_M",
+        "textures": [
+          {
+            "node": "Image Texture",
+            "image": "file1",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_ce150497-7a04-4d8d-bc0b-8c5859ec1488.fbm\\Mutant_diffuse.png",
+            "packed": true
+          },
+          {
+            "node": "Image Texture.001",
+            "image": "file2",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_ce150497-7a04-4d8d-bc0b-8c5859ec1488.fbm\\Mutant_normal.png",
+            "packed": true
+          }
+        ]
+      }
+    ],
+    "meshes": [
+      {
+        "name": "MutantMesh",
+        "triangles": 11271
+      }
+    ],
+    "bones": [
+      "mixamorig:Hips",
+      "mixamorig:Spine",
+      "mixamorig:Spine1",
+      "mixamorig:Spine2",
+      "mixamorig:Neck",
+      "mixamorig:Head",
+      "mixamorig:HeadTop_End",
+      "mixamorig:LeftShoulder",
+      "mixamorig:LeftArm",
+      "mixamorig:LeftForeArm",
+      "mixamorig:LeftHand",
+      "mixamorig:RightShoulder"
+    ]
+  },
+  {
+    "file": "Warzombie_F_Pedroso.fbx",
+    "materials": [
+      {
+        "name": "WorldWar_zombie_material",
+        "textures": [
+          {
+            "node": "Image Texture",
+            "image": "file5",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_01e7ca3b-45ef-40b0-aa73-14f80b1cff58.fbm\\world_war_zombie_diffuse.png",
+            "packed": true
+          },
+          {
+            "node": "Image Texture.001",
+            "image": "file6",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_01e7ca3b-45ef-40b0-aa73-14f80b1cff58.fbm\\world_war_zombie_normal.png",
+            "packed": true
+          },
+          {
+            "node": "Image Texture.002",
+            "image": "file7",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_01e7ca3b-45ef-40b0-aa73-14f80b1cff58.fbm\\world_war_zombie_specular.png",
+            "packed": true
+          }
+        ]
+      }
+    ],
+    "meshes": [
+      {
+        "name": "WorldWar_zombie",
+        "triangles": 14934
+      }
+    ],
+    "bones": [
+      "mixamorig:Hips",
+      "mixamorig:Spine",
+      "mixamorig:Spine1",
+      "mixamorig:Spine2",
+      "mixamorig:Neck",
+      "mixamorig:Head",
+      "mixamorig:HeadTop_End",
+      "mixamorig:LeftEye",
+      "mixamorig:RightEye",
+      "mixamorig:LeftShoulder",
+      "mixamorig:LeftArm",
+      "mixamorig:LeftForeArm"
+    ]
+  },
+  {
+    "file": "Yaku_J_Ignite.fbx",
+    "materials": [
+      {
+        "name": "yaku_zombie_material",
+        "textures": [
+          {
+            "node": "Image Texture",
+            "image": "file20",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_215703e8-8b31-449e-ba1d-8f6715c6d89e.fbm\\Yakuzombie_.png",
+            "packed": true
+          },
+          {
+            "node": "Image Texture.001",
+            "image": "file21",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_215703e8-8b31-449e-ba1d-8f6715c6d89e.fbm\\Yakuzombie_normal.png",
+            "packed": true
+          },
+          {
+            "node": "Image Texture.002",
+            "image": "file22",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_215703e8-8b31-449e-ba1d-8f6715c6d89e.fbm\\Yakuzombie_specular.png",
+            "packed": true
+          }
+        ]
+      },
+      {
+        "name": "yifu",
+        "textures": [
+          {
+            "node": "Image Texture",
+            "image": "file26",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_215703e8-8b31-449e-ba1d-8f6715c6d89e.fbm\\Yakuzombie_diffuse.png",
+            "packed": true
+          },
+          {
+            "node": "Image Texture.001",
+            "image": "file21",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_215703e8-8b31-449e-ba1d-8f6715c6d89e.fbm\\Yakuzombie_normal.png",
+            "packed": true
+          },
+          {
+            "node": "Image Texture.002",
+            "image": "file26.002",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_215703e8-8b31-449e-ba1d-8f6715c6d89e.fbm\\Yakuzombie_diffuse.png",
+            "packed": true
+          },
+          {
+            "node": "Image Texture.003",
+            "image": "file22",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_215703e8-8b31-449e-ba1d-8f6715c6d89e.fbm\\Yakuzombie_specular.png",
+            "packed": true
+          }
+        ]
+      }
+    ],
+    "meshes": [
+      {
+        "name": "Yaku_zombie",
+        "triangles": 8144
+      }
+    ],
+    "bones": [
+      "mixamorig:Hips",
+      "mixamorig:Spine",
+      "mixamorig:Spine1",
+      "mixamorig:Spine2",
+      "mixamorig:Neck",
+      "mixamorig:Head",
+      "mixamorig:HeadTop_End",
+      "mixamorig:LeftShoulder",
+      "mixamorig:LeftArm",
+      "mixamorig:LeftForeArm",
+      "mixamorig:LeftHand",
+      "mixamorig:LeftHandThumb1"
+    ]
+  },
+  {
+    "file": "Zombiegirl_W_Kurniawan.fbx",
+    "materials": [
+      {
+        "name": "ZombieGirl_body_Material",
+        "textures": [
+          {
+            "node": "Image Texture",
+            "image": "file5",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_28f5c4c9-0b55-4f73-958e-3adf82ecedbf.fbm\\zombie_body_diffuse.png",
+            "packed": true
+          },
+          {
+            "node": "Image Texture.001",
+            "image": "file3",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_28f5c4c9-0b55-4f73-958e-3adf82ecedbf.fbm\\zombie_normal.png",
+            "packed": true
+          },
+          {
+            "node": "Image Texture.002",
+            "image": "file4",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_28f5c4c9-0b55-4f73-958e-3adf82ecedbf.fbm\\zombie_specular.png",
+            "packed": true
+          }
+        ]
+      },
+      {
+        "name": "ZombieGirl_Material",
+        "textures": [
+          {
+            "node": "Image Texture",
+            "image": "file1",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_28f5c4c9-0b55-4f73-958e-3adf82ecedbf.fbm\\zombie_diffuse.png",
+            "packed": true
+          },
+          {
+            "node": "Image Texture.001",
+            "image": "file3",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_28f5c4c9-0b55-4f73-958e-3adf82ecedbf.fbm\\zombie_normal.png",
+            "packed": true
+          },
+          {
+            "node": "Image Texture.002",
+            "image": "file1.003",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_28f5c4c9-0b55-4f73-958e-3adf82ecedbf.fbm\\zombie_diffuse.png",
+            "packed": true
+          },
+          {
+            "node": "Image Texture.003",
+            "image": "file4",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_28f5c4c9-0b55-4f73-958e-3adf82ecedbf.fbm\\zombie_specular.png",
+            "packed": true
+          }
+        ]
+      },
+      {
+        "name": "ZombieGirl_Material.001",
+        "textures": [
+          {
+            "node": "Image Texture",
+            "image": "file1",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_28f5c4c9-0b55-4f73-958e-3adf82ecedbf.fbm\\zombie_diffuse.png",
+            "packed": true
+          },
+          {
+            "node": "Image Texture.001",
+            "image": "file3",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_28f5c4c9-0b55-4f73-958e-3adf82ecedbf.fbm\\zombie_normal.png",
+            "packed": true
+          },
+          {
+            "node": "Image Texture.002",
+            "image": "file1.004",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_28f5c4c9-0b55-4f73-958e-3adf82ecedbf.fbm\\zombie_diffuse.png",
+            "packed": true
+          },
+          {
+            "node": "Image Texture.003",
+            "image": "file4",
+            "size": [
+              2048,
+              2048
+            ],
+            "path": "D:\\unityprojects\\Zombarvr\\ArtSource\\ExternalReview\\FullResolution\\..\\..\\..\\..\\home\\app\\mixamo-mini\\tmp\\skins_28f5c4c9-0b55-4f73-958e-3adf82ecedbf.fbm\\zombie_specular.png",
+            "packed": true
+          }
+        ]
+      }
+    ],
+    "meshes": [
+      {
+        "name": "ZombieGirl_Body",
+        "triangles": 5408
+      },
+      {
+        "name": "ZombieGirl_Pants",
+        "triangles": 886
+      },
+      {
+        "name": "ZombieGirl_Top",
+        "triangles": 1154
+      }
+    ],
+    "bones": [
+      "mixamorig:Hips",
+      "mixamorig:Spine",
+      "mixamorig:Spine1",
+      "mixamorig:Spine2",
+      "mixamorig:Neck",
+      "mixamorig:Head",
+      "mixamorig:HeadTop_End",
+      "mixamorig:LeftEye",
+      "mixamorig:RightEye",
+      "mixamorig:LeftShoulder",
+      "mixamorig:LeftArm",
+      "mixamorig:LeftForeArm"
+    ]
+  }
+]

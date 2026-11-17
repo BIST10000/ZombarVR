@@ -40,8 +40,10 @@ namespace Zombar
         public bool Grab(BarHand hand)
         {
             if (IsHeld || Time.time < readyAt) return false;
+            if (kind == PropKind.Shaker && PhysicalBar.Instance.GetComponent<BarMixer>()?.Running == true) return false;
             Holder = hand;
-            Body.isKinematic = true;
+            Body.isKinematic = anchored;
+            if (!anchored) Body.useGravity = false;
             return true;
         }
         public void Release(Vector3 velocity)
@@ -50,11 +52,15 @@ namespace Zombar
             Holder = null;
             if (Body == null) return;
             Body.isKinematic = anchored;
+            Body.useGravity = !anchored;
             if (!anchored) Body.linearVelocity = Vector3.ClampMagnitude(velocity, 5f);
         }
         public void ResetHome()
         {
             Release(Vector3.zero);
+            // Keep the Transform and interpolated body in agreement after a handoff/teleport.
+            // A pending Transform write must not restore the served position on the next physics sync.
+            transform.SetPositionAndRotation(home, homeRotation);
             Body.position = home;
             Body.rotation = homeRotation;
             if (!Body.isKinematic) { Body.linearVelocity = Vector3.zero; Body.angularVelocity = Vector3.zero; }
@@ -68,13 +74,17 @@ namespace Zombar
             if (!IsHeld) return;
             Vector3 desired = Holder.transform.TransformPoint(gripOffset);
             if (kind == PropKind.Pump) desired = new Vector3(home.x, Mathf.Clamp(desired.y, home.y - 0.18f, home.y + 0.18f), home.z);
-            Body.MovePosition(desired);
-            if (!anchored) Body.MoveRotation(Holder.transform.rotation);
+            if (anchored) { Body.MovePosition(desired); return; }
+            // Drive a dynamic body so the solver can stop the grip against solid surfaces.
+            Body.linearVelocity = Vector3.ClampMagnitude((desired - Body.position) * 28f, 5f);
+            Quaternion delta = Holder.transform.rotation * Quaternion.Inverse(Body.rotation);
+            delta.ToAngleAxis(out float angle, out Vector3 axis);
+            if (angle > 180f) angle -= 360f;
+            Body.angularVelocity = Vector3.ClampMagnitude(axis * (angle * Mathf.Deg2Rad * 24f), 12f);
         }
         private void Update()
         {
             if (transform.position.y < -0.4f || Vector3.Distance(home, transform.position) > 7f) ResetHome();
-            if (IsHeld) SampleShake(Holder.Velocity, Time.time);
         }
         public void SampleShake(Vector3 velocity, float time)
         {
@@ -92,3 +102,4 @@ namespace Zombar
         }
     }
 }
+

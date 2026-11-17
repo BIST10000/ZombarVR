@@ -17,13 +17,14 @@ namespace Zombar
         private static void Install()
         {
             if (Array.IndexOf(Environment.GetCommandLineArgs(), "ZombarEditor.BarBatchValidation.Run") < 0) return;
+            Time.captureFramerate = 60;
             if (FindAnyObjectByType<BarValidationDriver>() == null)
                 new GameObject("Batch validation driver").AddComponent<BarValidationDriver>();
         }
 
         private void Update()
         {
-            if (++frames < 12 || ZombieBarGame.Instance == null) return;
+            if (++frames < (checkedRules ? 75 : 12) || ZombieBarGame.Instance == null) return;
             try
             {
                 var assembly = Assembly.Load("Assembly-CSharp-Editor");
@@ -46,6 +47,12 @@ namespace Zombar
                 Directory.CreateDirectory("Builds/Validation");
                 File.WriteAllText("Builds/Validation/failure.txt", e.ToString());
                 Debug.LogException(e);
+                try
+                {
+                    Assembly.Load("Assembly-CSharp-Editor").GetType("ZombarEditor.BarBatchValidation")
+                        .GetMethod("Capture", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, null);
+                }
+                catch (Exception captureError) { Debug.LogWarning(captureError.Message); }
                 Finish(1);
             }
         }

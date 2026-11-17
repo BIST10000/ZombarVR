@@ -1,0 +1,29 @@
+[
+  {
+    "name": "zombie",
+    "height": 3.0689923763275146,
+    "tris": 15014,
+    "actions": [
+      "mixamo.com"
+    ]
+  },
+  {
+    "name": "crawler",
+    "height": 3.051576852798462,
+    "tris": 8224,
+    "actions": [
+      "mixamo.com",
+      "mixamo.com.001"
+    ]
+  },
+  {
+    "name": "brute",
+    "height": 2.85540235042572,
+    "tris": 11347,
+    "actions": [
+      "mixamo.com",
+      "mixamo.com.001",
+      "mixamo.com.002"
+    ]
+  }
+]

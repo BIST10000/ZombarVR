@@ -1,0 +1,438 @@
+{
+  "wine_bottles_01": {
+    "type": 2,
+    "tags": [
+      "wine",
+      "drink",
+      "bottle",
+      "champagne",
+      "grape",
+      "farmhouse",
+      "vineyard"
+    ],
+    "name": "Wine Bottles 01",
+    "categories": [
+      "props",
+      "containers",
+      "dishes"
+    ],
+    "date_published": 1648166400,
+    "sponsors": [
+      "4714267",
+      "11109006"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "polycount": 28848,
+    "texel_density": 18488.1271867906,
+    "dimensions": [
+      676.3246953487396,
+      80.56290075182915,
+      331.367195234634
+    ],
+    "files_hash": "9426086370c86485039d330f47b99c93d333ff38",
+    "description": "Free 8K model of four wine and champagne bottles with realistic glass, varied labels, foil/wax tops and subtle wear, evoking a rustic vineyard farmhouse character.",
+    "authors": {
+      "Rico Cilliers": "modeling",
+      "Jurita Burger": "graphic design"
+    },
+    "category_id": "8632e0a1-9dd5-54b0-a83d-84e7004ea855",
+    "category": "Food & Kitchen/Drinks/Bottles & Wine",
+    "attributes": {
+      "condition": [
+        "worn"
+      ],
+      "material": [
+        "glass",
+        "wax"
+      ]
+    },
+    "img_version": "ff1e806c",
+    "download_count": 62528,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/wine_bottles_01.png?width=256&height=256&format=webp&v=ff1e806c"
+  },
+  "Lantern_01": {
+    "date_published": 1590680464,
+    "name": "Lantern 01",
+    "categories": [
+      "props",
+      "lighting"
+    ],
+    "type": 2,
+    "tags": [
+      "prop",
+      "metal",
+      "glass",
+      "lantern",
+      "antique",
+      "vintage",
+      "hurricane",
+      "lamp",
+      "bronze",
+      "oldfashioned",
+      "brass",
+      "copper"
+    ],
+    "authors": {
+      "Rajil Jose Macatangay": "All"
+    },
+    "max_resolution": [
+      4096,
+      4096
+    ],
+    "polycount": 33902,
+    "texel_density": 10425.298212954804,
+    "dimensions": [
+      122.08568677306175,
+      97.18310832977295,
+      294.2466139793396
+    ],
+    "files_hash": "e8a56bd66bee21140aa3272268bd207bac37a7e1",
+    "description": "Free 4K model of an antique brass/bronze hurricane lantern with textured glass globe, worn patina, metal handle and detailed rivets for vintage character.",
+    "sponsors": [
+      "11109006",
+      "84390067"
+    ],
+    "category_id": "96b36a4f-e094-52da-912e-e51ca9eb7aa0",
+    "category": "Lighting/Portable/Lanterns",
+    "attributes": {
+      "condition": [
+        "worn"
+      ],
+      "material": [
+        "brass",
+        "glass"
+      ]
+    },
+    "img_version": "0b1827f5",
+    "download_count": 66536,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/Lantern_01.png?width=256&height=256&format=webp&v=0b1827f5"
+  },
+  "hanging_industrial_lamp": {
+    "type": 2,
+    "name": "Hanging Industrial Lamp",
+    "categories": [
+      "lighting"
+    ],
+    "tags": [
+      "industrial lighting",
+      "hanging lamp",
+      "warehouse lighting",
+      "bunker",
+      "metal lamp",
+      "factory",
+      "warehouse"
+    ],
+    "authors": {
+      "Kuutti Siitonen": "All"
+    },
+    "donated": true,
+    "max_resolution": [
+      4096,
+      4096
+    ],
+    "polycount": 9530,
+    "texel_density": 3646.37291470571,
+    "dimensions": [
+      549.6065020561218,
+      549.606442451477,
+      1355.3501134738326
+    ],
+    "date_published": 1748390400,
+    "files_hash": "93bdeee802d5c557ec986ed728bf843b41ead1fb",
+    "description": "Free 4K model of a hanging industrial metal lamp with chipped green paint, chain-and-cable suspension, protective wire cage and weathered, scratched surfaces.",
+    "category_id": "bb6f5508-b81d-5b93-b249-e1598b7cc1c1",
+    "category": "Lighting/Ceiling/Industrial Pendants",
+    "attributes": {
+      "condition": [
+        "worn"
+      ],
+      "material": [
+        "metal"
+      ]
+    },
+    "img_version": "68971f0a",
+    "download_count": 4179,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/hanging_industrial_lamp.png?width=256&height=256&format=webp&v=68971f0a"
+  },
+  "rollershutter_window_02": {
+    "donated": true,
+    "name": "Rollershutter Window 02",
+    "type": 2,
+    "authors": {
+      "MP": "All"
+    },
+    "info": null,
+    "date_published": 1696982400,
+    "categories": [
+      "industrial",
+      "structures",
+      "buildings",
+      "collection: hidden_alley"
+    ],
+    "tags": [
+      "urban",
+      "security shutter",
+      "garage door",
+      "roller garage door",
+      "commercial",
+      "warehouse door"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "polycount": 1120,
+    "texel_density": 3015.05991343144,
+    "dimensions": [
+      3600.000321865082,
+      168.07068698108196,
+      1560.8682408933419
+    ],
+    "files_hash": "97b51a0f6fdf27b52a7fda1eab44457391115806",
+    "sponsors": [
+      "101447488"
+    ],
+    "description": "Free 8K model of an urban metal roller shutter: riveted frame, worn slats, grime and soot streaks; includes a clean and graffiti-tagged variant.",
+    "category_id": "49d97a62-fac9-5a07-8302-1c233afcf789",
+    "category": "Architecture/Windows & Shutters/Roller Shutters",
+    "collections": [
+      "hidden_alley"
+    ],
+    "attributes": {
+      "condition": [
+        "worn"
+      ],
+      "material": [
+        "metal"
+      ]
+    },
+    "img_version": "93d75012",
+    "download_count": 10006,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rollershutter_window_02.png?width=256&height=256&format=webp&v=93d75012"
+  },
+  "GothicCabinet_01": {
+    "type": 2,
+    "tags": [
+      "vintage",
+      "wood",
+      "gothic",
+      "furniture",
+      "table",
+      "shelf",
+      "decorative"
+    ],
+    "date_published": 1585605600,
+    "name": "Gothic Cabinet 01",
+    "categories": [
+      "furniture",
+      "shelves"
+    ],
+    "authors": {
+      "Kirill Sannikov": "All"
+    },
+    "sponsors": [
+      "26820710"
+    ],
+    "max_resolution": [
+      4096,
+      4096
+    ],
+    "polycount": 12170,
+    "texel_density": 628.1039053145677,
+    "dimensions": [
+      1719.1437482833862,
+      1128.6656260490417,
+      2360.900953424988
+    ],
+    "files_hash": "d00370c71bc0545009b85e8ba406b74c04efab65",
+    "description": "Free 4K model: vintage Gothic wooden cabinet with ornate carved panels, iron hinges and stacked shelving - characterful furniture for period interiors.",
+    "category_id": "14debc4f-6ceb-597a-a824-8de173aa95a9",
+    "category": "Furniture/Storage Furniture/Cabinets & Cupboards",
+    "attributes": {
+      "condition": [
+        "worn"
+      ],
+      "material": [
+        "wood",
+        "metal"
+      ]
+    },
+    "img_version": "648e8205",
+    "download_count": 45089,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/GothicCabinet_01.png?width=256&height=256&format=webp&v=648e8205"
+  },
+  "bar_chair_round_01": {
+    "donated": true,
+    "type": 2,
+    "tags": [
+      "bar",
+      "pub",
+      "stool",
+      "tall",
+      "wooden",
+      "classical",
+      "old",
+      "vintage",
+      "cigar"
+    ],
+    "name": "Bar Chair Round 01",
+    "categories": [
+      "seating",
+      "furniture"
+    ],
+    "authors": {
+      "Dairon Sanchez": "All"
+    },
+    "date_published": 1639094400,
+    "sponsors": [
+      "11167855"
+    ],
+    "max_resolution": [
+      4096,
+      4096
+    ],
+    "polycount": 14373,
+    "texel_density": 2318.1009345497273,
+    "dimensions": [
+      483.1501990556717,
+      485.99570989608765,
+      750.5484623070515
+    ],
+    "files_hash": "3a4411b06fb8509e297c299acac13b2e6d5d71b0",
+    "description": "Free 4K model, vintage wooden bar stool with round seat, carved beaded trim, hexagonal legs, circular footrest and worn finish.",
+    "category_id": "302a40f3-e544-5721-b63b-ca3574e9975a",
+    "category": "Furniture/Seating/Stools & Bar Seating",
+    "attributes": {
+      "condition": [
+        "worn"
+      ],
+      "material": [
+        "wood"
+      ]
+    },
+    "img_version": "4a7d5e93",
+    "download_count": 9534,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/bar_chair_round_01.png?width=256&height=256&format=webp&v=4a7d5e93"
+  },
+  "wooden_bookshelf_worn": {
+    "donated": true,
+    "type": 2,
+    "date_published": 1684108800,
+    "name": "Wooden Bookshelf Worn",
+    "authors": {
+      "Ulan Cabanilla": "All"
+    },
+    "info": null,
+    "categories": [
+      "furniture",
+      "shelves",
+      "collection: the_shed"
+    ],
+    "tags": [
+      "old",
+      "wooden",
+      "wood",
+      "worn",
+      "garage",
+      "shed",
+      "rustic",
+      "antique",
+      "distressed",
+      "aged",
+      "weathered",
+      "bookcase",
+      "shelves",
+      "carpentry",
+      "vintage",
+      "storage"
+    ],
+    "max_resolution": [
+      4096,
+      4096
+    ],
+    "polycount": 10106,
+    "texel_density": 761.2948053157476,
+    "dimensions": [
+      1373.95179271698,
+      581.3020169734955,
+      2063.442051410675
+    ],
+    "files_hash": "7db4a47cb5d2cf4dccb714c4ada6008321217fcb",
+    "description": "Free 4K model of a worn wooden bookshelf with multiple shelves, distressed weathered grain, layered plywood edges, visible nail holes and rustic vintage finish.",
+    "sponsors": [
+      "11167855",
+      "26820710"
+    ],
+    "category_id": "306ba141-9b10-54f2-8d06-09031cea8318",
+    "category": "Furniture/Storage Furniture/Shelving & Bookcases",
+    "collections": [
+      "the_shed"
+    ],
+    "attributes": {
+      "condition": [
+        "worn"
+      ],
+      "material": [
+        "wood",
+        "metal"
+      ]
+    },
+    "img_version": "47d9afff",
+    "download_count": 10801,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/wooden_bookshelf_worn.png?width=256&height=256&format=webp&v=47d9afff"
+  },
+  "wine_barrel_01": {
+    "type": 2,
+    "tags": [
+      "barrel",
+      "wine",
+      "celler",
+      "old",
+      "worn",
+      "grape",
+      "farmhouse",
+      "farm"
+    ],
+    "date_published": 1623767646,
+    "sponsors": [
+      "3267566"
+    ],
+    "name": "Wine Barrel 01",
+    "categories": [
+      "containers"
+    ],
+    "authors": {
+      "James Ray Cock": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "polycount": 10820,
+    "texel_density": 2580.2600580932635,
+    "dimensions": [
+      741.9015169143677,
+      756.035715341568,
+      871.2633550167084
+    ],
+    "files_hash": "943d486d1d003b1f56157522fd5382e24ab4bf07",
+    "description": "Free 8K wine barrel model with worn oak staves, weathered metal hoops and bung hole - high-detail farmhouse/cellar prop perfect for rustic farm scenes.",
+    "category_id": "fb26976a-7974-5a13-bbc8-05494b04962a",
+    "category": "Containers & Storage/Barrels & Drums/Wooden Barrels",
+    "attributes": {
+      "condition": [
+        "worn"
+      ],
+      "material": [
+        "wood",
+        "metal"
+      ]
+    },
+    "img_version": "00ae3356",
+    "download_count": 26486,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/wine_barrel_01.png?width=256&height=256&format=webp&v=00ae3356"
+  }
+}

@@ -20,7 +20,7 @@ namespace ZombarEditor
             Directory.CreateDirectory("Assets/Zombar/Art/Materials");
             AssetDatabase.Refresh();
             ConfigureModels();
-            BuildCharacter("Male"); BuildCharacter("Female");
+            ExternalCharacterBuilder.BuildAll();
             var scene = EditorSceneManager.OpenScene("Assets/Scenes/ZombieBar.unity");
             // Remove the original oversized decorative drinks from the playable counter.
             foreach (var t in UnityEngine.Object.FindObjectsByType<Transform>())
@@ -63,7 +63,9 @@ namespace ZombarEditor
             EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(scene.path, true) };
             AssetDatabase.SaveAssets();
             File.WriteAllText("Builds/Validation/physical-scene.txt", "Physical bar built. No BarTarget buttons remain.\n" +
-                "Character source: Quaternius CC0; props: authored in Blender.\nProps: " + UnityEngine.Object.FindObjectsByType<BarProp>().Length);
+                "Characters: Adobe Mixamo; environment: imported CC0 models.\nProps: " + UnityEngine.Object.FindObjectsByType<BarProp>().Length);
+            if (File.Exists("Assets/Zombar/Art/External/Environment/material-map.json"))
+                ExternalEnvironmentBuilder.Build();
         }
 
         private static void ConfigureModels()
@@ -98,105 +100,6 @@ namespace ZombarEditor
             }
         }
 
-        private static void BuildCharacter(string sex)
-        {
-            string path = "Assets/Zombar/Art/Characters/Adapted/Zombie_" + sex + ".fbx";
-            var importer = (ModelImporter)AssetImporter.GetAtPath(path);
-            importer.animationType = ModelImporterAnimationType.Generic;
-            importer.importAnimation = true;
-            importer.materialImportMode = ModelImporterMaterialImportMode.ImportStandard;
-            var clipSettings = importer.defaultClipAnimations;
-            foreach (var clip in clipSettings) clip.loopTime = clip.name.IndexOf("Idle",StringComparison.OrdinalIgnoreCase)>=0 || clip.name.IndexOf("Walk",StringComparison.OrdinalIgnoreCase)>=0 || clip.name.IndexOf("Punch",StringComparison.OrdinalIgnoreCase)>=0;
-            importer.clipAnimations = clipSettings;
-            importer.SaveAndReimport();
-            var clips = AssetDatabase.LoadAllAssetsAtPath(path).OfType<AnimationClip>().Where(c => !c.name.StartsWith("__")).ToArray();
-            File.WriteAllText("Builds/Validation/character-" + sex + ".txt", string.Join("\n", clips.Select(c=>c.name)));
-            foreach (var source in AssetDatabase.LoadAllAssetsAtPath(path).OfType<Material>())
-            {
-                string matPath = "Assets/Zombar/Art/Materials/Zombie_" + sex + "_" + source.name.Replace('/','_') + ".mat";
-                var mat = AssetDatabase.LoadAssetAtPath<Material>(matPath);
-                if (mat == null)
-                {
-                    mat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-                    Color color = source.HasProperty("_Color") ? source.color : new Color(.3f,.35f,.2f);
-                    // Desaturate original bright palette into sickly skin and worn clothing.
-                    color = Color.Lerp(color, new Color(color.grayscale * .75f, color.grayscale * .78f, color.grayscale * .58f), .48f);
-                    mat.SetColor("_BaseColor",color); mat.SetFloat("_Smoothness",.12f);
-                    if (source.mainTexture != null) mat.SetTexture("_BaseMap", source.mainTexture);
-                    AssetDatabase.CreateAsset(mat,matPath);
-                }
-                Color tone = source.name.Contains("Skin") ? new Color(.43f,.48f,.28f) :
-                    source.name.Contains("Bones") ? new Color(.65f,.58f,.4f) :
-                    source.name.Contains("Face") ? new Color(.018f,.012f,.008f) :
-                    source.name.Contains("Guts") || source.name.Contains("Brain") ? new Color(.4f,.07f,.065f) :
-                    source.name.Contains("Pants") ? new Color(.16f,.19f,.14f) : new Color(.24f,.18f,.11f);
-                mat.SetColor("_BaseColor",tone);
-                if (source.name.StartsWith("Portrait_"))
-                {
-                    mat.SetColor("_BaseColor", source.color.gamma);
-                    mat.SetFloat("_Smoothness", source.name.Contains("Cornea") ? .76f : .33f);
-                    if (source.name.Contains("Suture")) mat.SetFloat("_Metallic", .67f);
-                    if (source.name.Contains("Dermis") || source.name.Contains("Leather") || source.name.Contains("Twill"))
-                    {
-                        const string maps = "Assets/Zombar/Art/Characters/PortraitMaps/";
-                        string surface = source.name.Contains("Leather") ? "Hide" : source.name.Contains("Twill") ? "Twill" : "Dermis";
-                        string relief = surface == "Dermis" ? "DermisNormal" : "HideNormal";
-                        var normal = (TextureImporter)AssetImporter.GetAtPath(maps+relief+".png");
-                        if (normal.textureType != TextureImporterType.NormalMap)
-                        {
-                            normal.textureType = TextureImporterType.NormalMap;
-                            normal.SaveAndReimport();
-                        }
-                        mat.SetColor("_BaseColor",Color.white);
-                        mat.SetTexture("_BaseMap",AssetDatabase.LoadAssetAtPath<Texture2D>(maps+surface+".png"));
-                        mat.SetTexture("_BumpMap",AssetDatabase.LoadAssetAtPath<Texture2D>(maps+relief+".png"));
-                        mat.SetFloat("_BumpScale",.65f);
-                        mat.EnableKeyword("_NORMALMAP");
-                    }
-                }
-                EditorUtility.SetDirty(mat);
-                importer.AddRemap(new AssetImporter.SourceAssetIdentifier(source),mat);
-            }
-            importer.SaveAndReimport();
-            string controllerPath = Root + "/Patron" + sex + ".controller";
-            var controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(controllerPath);
-            if (controller == null)
-            {
-                controller = AnimatorController.CreateAnimatorControllerAtPath(controllerPath);
-                controller.AddParameter("Angry",AnimatorControllerParameterType.Bool);
-                controller.AddParameter("Dead",AnimatorControllerParameterType.Bool);
-                var sm = controller.layers[0].stateMachine;
-                var idle = sm.AddState("Idle"); idle.motion = FindClip(clips,"idle") ?? clips.FirstOrDefault();
-                var attack = sm.AddState("Attack"); attack.motion = FindClip(clips,"attack") ?? FindClip(clips,"punch") ?? idle.motion;
-                var dead = sm.AddState("Dead"); dead.motion = FindClip(clips,"defeat") ?? FindClip(clips,"death") ?? FindClip(clips,"die") ?? idle.motion;
-                sm.defaultState = idle;
-                var a=idle.AddTransition(attack); a.hasExitTime=false; a.duration=.15f; a.AddCondition(AnimatorConditionMode.If,0,"Angry");
-                var b=attack.AddTransition(idle); b.hasExitTime=false; b.duration=.15f; b.AddCondition(AnimatorConditionMode.IfNot,0,"Angry");
-                var d=sm.AddAnyStateTransition(dead); d.hasExitTime=false; d.duration=.15f; d.canTransitionToSelf=false; d.AddCondition(AnimatorConditionMode.If,0,"Dead");
-            }
-            foreach (var child in controller.layers[0].stateMachine.states)
-            {
-                string clipName = child.state.name == "Attack" ? "punch" : child.state.name == "Dead" ? "defeat" : "idle";
-                child.state.motion = FindClip(clips, clipName) ?? clips.FirstOrDefault();
-                EditorUtility.SetDirty(child.state);
-            }
-            EditorUtility.SetDirty(controller);
-            var root = new GameObject("Patron" + sex);
-            var model = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(path));
-            model.transform.SetParent(root.transform,false);
-            model.transform.localRotation = Quaternion.Euler(0,180,0);
-            var renderers = model.GetComponentsInChildren<Renderer>();
-            var bounds = renderers[0].bounds; foreach(var r in renderers) bounds.Encapsulate(r.bounds);
-            model.transform.localScale *= 1.8f / bounds.size.y;
-            bounds=renderers[0].bounds; foreach(var r in renderers) bounds.Encapsulate(r.bounds);
-            model.transform.localPosition -= new Vector3(bounds.center.x,bounds.min.y,bounds.center.z);
-            var animator = model.GetComponent<Animator>(); if(animator==null) animator=model.AddComponent<Animator>();
-            animator.runtimeAnimatorController=controller; animator.applyRootMotion=false; animator.cullingMode=AnimatorCullingMode.AlwaysAnimate;
-            PrefabUtility.SaveAsPrefabAsset(root,Root+"/Patron"+sex+".prefab");
-            UnityEngine.Object.DestroyImmediate(root);
-        }
-        private static AnimationClip FindClip(AnimationClip[] clips,string name) => clips.FirstOrDefault(c=>c.name.IndexOf(name,StringComparison.OrdinalIgnoreCase)>=0);
-
         private static BarProp AddProp(PhysicalBar bar, PropKind kind, Vector3 pos, string label, bool anchored=false)
         {
             var prop=PhysicalBar.MakeProp(kind,pos,anchored); prop.transform.SetParent(bar.transform,true); prop.label=label;
@@ -204,12 +107,12 @@ namespace ZombarEditor
         }
         private static void CreateHelper(PhysicalBar bar)
         {
-            var helper=(GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(Root+"/PatronMale.prefab"));
+            var helper=(GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(Root+"/Helper.prefab"));
             helper.name="Помощник · донор"; helper.transform.SetParent(bar.transform,false);
             helper.transform.localPosition=new Vector3(-1.85f,0,-.2f); helper.transform.localRotation=Quaternion.Euler(0,35,0);
             bar.helper=helper.transform;
             var arm = AddProp(bar,PropKind.HelperArm,new Vector3(-1.57f,1.12f,-.42f),"Схватите и потяните конечность",true);
-            arm.attachedLimb = helper.GetComponentsInChildren<Transform>().FirstOrDefault(t=>t.name=="LowerArm.L");
+            arm.attachedLimb = helper.GetComponentsInChildren<Transform>().FirstOrDefault(t=>t.name.EndsWith("LeftForeArm"));
             AddProp(bar,PropKind.HelperEye,new Vector3(-1.75f,1.61f,-.42f),"Схватите и потяните глаз",true);
             Label("ДОНОР № 04\nКровь: наклоните бутылку к крану\nКонечность / глаз: схватить и потянуть",bar.transform,new Vector3(-1.85f,2,-.1f),1f,.28f);
         }
@@ -322,5 +225,6 @@ namespace ZombarEditor
         }
     }
 }
+
 
 

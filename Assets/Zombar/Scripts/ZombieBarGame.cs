@@ -56,6 +56,16 @@ namespace Zombar
             readyDrink = recipes[recipe]; drinkQuality = quality;
             ServePatron(id); RefreshHud();
         }
+        public int CurrentOrder
+        {
+            get
+            {
+                foreach (var patron in patrons)
+                    if (!patron.corpse) return System.Array.IndexOf(recipes, patron.recipe);
+                return -1;
+            }
+        }
+
         public void PhysicalPunch(string id) { if (!gameOver) PunchPatron(id); }
         public void PhysicalHarvest(string id) { if (!gameOver) HarvestCorpse(id); }
         public void PhysicalPump() { if (!gameOver) PumpFlood(); }
@@ -85,7 +95,7 @@ namespace Zombar
         [SerializeField] private int money = 20;
 
         private readonly List<Patron> patrons = new List<Patron>();
-        private readonly string[] recipes = { "Кровавый флип", "Гнилой сауэр", "Глазной хайбол" };
+        private readonly string[] recipes = CocktailRecipes.Names;
         private readonly Color zombieGreen = new Color(0.28f, 0.53f, 0.38f);
         private readonly Color zombiePurple = new Color(0.39f, 0.27f, 0.48f);
 
@@ -104,7 +114,7 @@ namespace Zombar
         private bool rightArmDisabled;
         private bool leftArmDisabled;
         private bool eyeInjured;
-        private float eventIn = 24f;
+        private float eventIn = 120f;
         private float traderIn = 32f;
         private float guestIn;
         private float hudIn;
@@ -162,7 +172,7 @@ namespace Zombar
             }
             Notify("Возьмите ингредиенты рукой, смешайте в шейкере и передайте стакан клиенту.");
             SpawnPatron(false);
-            SpawnPatron(false);
+            SpawnPatron(true);
             RefreshHud();
             if (Hud != null) Hud.Notify("Новая смена. Приготовьте коктейль по заказу клиента.");
         }
@@ -242,9 +252,9 @@ namespace Zombar
         private void Brew(int recipe)
         {
             if (!string.IsNullOrEmpty(readyDrink)) { Notify("Сначала отдайте уже приготовленный коктейль."); return; }
-            int needBlood = recipe < 2 ? 1 : 0;
-            int needEyes = recipe == 0 || recipe == 2 ? 1 : 0;
-            int needFlesh = recipe == 1 || recipe == 2 ? 1 : 0;
+            int needBlood = CocktailRecipes.Portions[recipe].x;
+            int needEyes = CocktailRecipes.Portions[recipe].y;
+            int needFlesh = CocktailRecipes.Portions[recipe].z;
             if (blood < needBlood || eyes < needEyes || flesh < needFlesh)
             {
                 Notify("Не хватает ингредиентов. Помощник восстанавливается рядом.");
@@ -343,6 +353,7 @@ namespace Zombar
             if (patron.giant)
             {
                 DamagePlayer("Удары лишь разозлили титана. Этого громилу не победить!");
+                SetPatronLook(patron, true);
                 patron.angry = true;
                 patron.attackIn = Mathf.Min(patron.attackIn, 2f);
                 return;
@@ -387,7 +398,7 @@ namespace Zombar
         private void SpawnPatron(bool giant)
         {
             string id = "guest_" + System.Guid.NewGuid().ToString("N").Substring(0, 7);
-            int recipe = Random.Range(0, recipes.Length);
+            int recipe = servedCount == 0 ? (giant ? 1 : 0) : Random.Range(0, recipes.Length);
             bool leftSlotUsed = false;
             bool rightSlotUsed = false;
             for (int i = 0; i < patrons.Count; i++)
@@ -397,7 +408,7 @@ namespace Zombar
                 else rightSlotUsed = true;
             }
             if (leftSlotUsed && rightSlotUsed) return;
-            float x = leftSlotUsed ? 0.72f : -0.72f;
+            float x = leftSlotUsed ? (giant ? 1.05f : 0.72f) : -0.72f;
             Vector3 position = new Vector3(x, 0f, 0.55f);
             GameObject body = CreatePatronModel(id, position, giant);
             Patron patron = new Patron
@@ -405,7 +416,7 @@ namespace Zombar
                 id = id,
                 recipe = recipes[recipe],
                 root = body,
-                patience = giant ? 160f : Random.Range(120f, 150f),
+                patience = servedCount == 0 ? 300f : giant ? 180f : Random.Range(150f, 180f),
                 health = 2,
                 giant = giant,
                 angry = false,
@@ -415,20 +426,20 @@ namespace Zombar
             UpdatePatronSign(patron);
         }
 
-        private bool nextPatronWearsHood;
+        private bool nextPatronIsFemale;
         private GameObject CreatePatronModel(string id, Vector3 position, bool giant)
         {
-            var prefab = Resources.Load<GameObject>("PhysicalBar/" + (nextPatronWearsHood ? "PatronFemale" : "PatronMale"));
-            nextPatronWearsHood = !nextPatronWearsHood;
+            var prefab = Resources.Load<GameObject>("PhysicalBar/" + (giant ? "Titan" : nextPatronIsFemale ? "PatronFemale" : "PatronMale"));
+            if (!giant) nextPatronIsFemale = !nextPatronIsFemale;
             if (prefab == null) throw new System.InvalidOperationException("Run PhysicalBarSceneBuilder.Build before playing.");
             var root = Instantiate(prefab, position, Quaternion.identity);
             root.name = giant ? "Титан-клиент" : "Зомби-клиент";
-            root.transform.localScale *= giant ? 1.25f : 1f;
+
             var actor = root.AddComponent<PhysicalPatron>();
             actor.id = id; actor.giant = giant;
-            var sign = CreateText("Заказ", root.transform, new Vector3(0, giant ? 2.15f : 1.92f, 0), 0.03f, 40, Color.white);
+            var sign = CreateText("Заказ", root.transform, new Vector3(0, giant ? 3.12f : 1.92f, 0), 0.03f, 40, Color.white);
             var layout = sign.GetComponent<BarLabelLayout>();
-            layout.width = 0.7f; layout.height = 0.16f;
+            layout.width = 0.95f; layout.height = 0.28f;
             pendingSigns[id] = sign;
             return root;
         }
@@ -445,7 +456,7 @@ namespace Zombar
             if (patron.sign == null) return;
             string mood = patron.angry ? "БУЯНИТ" : "ЖДЁТ";
             string countdown = patron.angry ? "" : " " + Mathf.CeilToInt(patron.patience) + "с";
-            patron.sign.text = (patron.giant ? "ТИТАН · " : "") + patron.recipe + "\n" + mood + countdown;
+            patron.sign.text = (patron.giant ? "ТИТАН · " : "") + patron.recipe + "\n" + CocktailRecipes.Formula(System.Array.IndexOf(recipes, patron.recipe)) + "\n" + mood + countdown;
             patron.sign.color = patron.angry ? new Color(1f, 0.35f, 0.24f) : Color.white;
         }
 
@@ -844,12 +855,12 @@ namespace Zombar
             rightArmDisabled = leftArmDisabled = eyeInjured = gameOver = fireActive = floodActive = false;
             iceBox = sprinkler = drainUpgrade = false;
             readyDrink = "";
-            eventIn = 24f;
+            eventIn = 120f;
             traderIn = 32f;
             guestIn = 0f;
             RemoveVignette();
             SpawnPatron(false);
-            SpawnPatron(false);
+            SpawnPatron(true);
             RefreshHud();
             if (Hud != null) Hud.Notify("Новая смена. Приготовьте коктейль по заказу клиента.");
         }
@@ -963,3 +974,5 @@ namespace Zombar
         }
     }
 }
+
+

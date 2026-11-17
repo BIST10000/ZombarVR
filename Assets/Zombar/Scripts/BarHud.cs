@@ -9,6 +9,7 @@ namespace Zombar
         private UnityEngine.UI.Text message;
         private UnityEngine.UI.Text hint;
         private float messageUntil;
+        private UnityEngine.UI.Text workflow;
 
         public void Initialize(Camera camera)
         {
@@ -32,6 +33,7 @@ namespace Zombar
             var panel = status.transform.parent.GetComponent<RectTransform>();
             panel.SetParent(ledger.transform, false);
             panel.anchoredPosition = Vector2.zero;
+            workflow = Label(root.transform, "Приготовление", new Vector2(0, 270), new Vector2(900, 190), 26);
             message = Label(root.transform, "Событие", new Vector2(0, -180), new Vector2(900, 70), 25);
             message.color = new Color(1f, 0.82f, 0.46f);
             hint = Label(root.transform, "Действие", new Vector2(0, -255), new Vector2(960, 65), 21);
@@ -63,6 +65,7 @@ namespace Zombar
             return text;
         }
 
+        public void SetWorkflow(string value) { if (workflow != null) workflow.text = value; }
         public void SetStatus(string value) { if (status != null) status.text = value; }
         public void SetHint(string value) { if (hint != null) hint.text = value; }
         public void Notify(string value)

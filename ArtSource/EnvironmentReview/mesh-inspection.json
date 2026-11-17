@@ -1,0 +1,607 @@
+[
+  {
+    "file": "D:\\unityprojects\\Zombarvr\\ArtSource\\EnvironmentReview\\bar_chair_round_01\\bar_chair_round_01.gltf",
+    "objects": [
+      {
+        "name": "bar_chair_round_01",
+        "tris": 14373,
+        "min": [
+          -0.2287321835756302,
+          -0.24158908426761627,
+          2.8868282242910936e-05
+        ],
+        "max": [
+          0.25441813468933105,
+          0.24440674483776093,
+          0.7505773305892944
+        ],
+        "materials": [
+          "Bar Chair"
+        ]
+      }
+    ]
+  },
+  {
+    "file": "D:\\unityprojects\\Zombarvr\\ArtSource\\EnvironmentReview\\brass_goblets\\brass_goblets.gltf",
+    "objects": [
+      {
+        "name": "brass_goblet_01",
+        "tris": 3072,
+        "min": [
+          -0.07515861093997955,
+          -0.19509071111679077,
+          0.004920527338981628
+        ],
+        "max": [
+          0.07450325042009354,
+          -0.04542885720729828,
+          0.2769099771976471
+        ],
+        "materials": [
+          "brass_goblets_01"
+        ]
+      },
+      {
+        "name": "brass_goblet_02",
+        "tris": 3264,
+        "min": [
+          -0.22009959816932678,
+          -0.039709143340587616,
+          0.005817331373691559
+        ],
+        "max": [
+          -0.07898931205272675,
+          0.10140115022659302,
+          0.27159130573272705
+        ],
+        "materials": [
+          "brass_goblets_02"
+        ]
+      },
+      {
+        "name": "brass_goblet_03",
+        "tris": 3264,
+        "min": [
+          0.08403931558132172,
+          -0.04673249274492264,
+          0.006193196401000023
+        ],
+        "max": [
+          0.23329506814479828,
+          0.10252325981855392,
+          0.27829837799072266
+        ],
+        "materials": [
+          "brass_goblets_03"
+        ]
+      }
+    ]
+  },
+  {
+    "file": "D:\\unityprojects\\Zombarvr\\ArtSource\\EnvironmentReview\\GothicCabinet_01\\GothicCabinet_01.gltf",
+    "objects": [
+      {
+        "name": "GothicCabinet_01_cabinet",
+        "tris": 3718,
+        "min": [
+          -0.8595718145370483,
+          -0.5582708120346069,
+          -7.45047969985535e-08
+        ],
+        "max": [
+          0.8595719337463379,
+          0.4573075771331787,
+          2.36090087890625
+        ],
+        "materials": [
+          "GothicCabinet_01"
+        ]
+      },
+      {
+        "name": "GothicCabinet_01_door4",
+        "tris": 2111,
+        "min": [
+          0.0188768170773983,
+          -0.6713576316833496,
+          0.2950570285320282
+        ],
+        "max": [
+          0.7242878675460815,
+          -0.4077085256576538,
+          1.1885733604431152
+        ],
+        "materials": [
+          "GothicCabinet_01"
+        ]
+      },
+      {
+        "name": "GothicCabinet_01_door3",
+        "tris": 2115,
+        "min": [
+          -0.7057545781135559,
+          -0.572705864906311,
+          0.2950570285320282
+        ],
+        "max": [
+          0.0001424080692231655,
+          -0.4082777202129364,
+          1.1885733604431152
+        ],
+        "materials": [
+          "GothicCabinet_01"
+        ]
+      },
+      {
+        "name": "GothicCabinet_01_door2",
+        "tris": 2111,
+        "min": [
+          0.0034015499986708164,
+          -0.59467613697052,
+          1.299082636833191
+        ],
+        "max": [
+          0.7236976027488708,
+          -0.4081028699874878,
+          2.192599058151245
+        ],
+        "materials": [
+          "GothicCabinet_01"
+        ]
+      },
+      {
+        "name": "GothicCabinet_01_door1",
+        "tris": 2115,
+        "min": [
+          -0.7051600813865662,
+          -0.5155270099639893,
+          1.299082636833191
+        ],
+        "max": [
+          0.0041671437211334705,
+          -0.40899109840393066,
+          2.192599058151245
+        ],
+        "materials": [
+          "GothicCabinet_01"
+        ]
+      }
+    ]
+  },
+  {
+    "file": "D:\\unityprojects\\Zombarvr\\ArtSource\\EnvironmentReview\\hanging_industrial_lamp\\hanging_industrial_lamp.gltf",
+    "objects": [
+      {
+        "name": "hanging_industrial_lamp",
+        "tris": 9530,
+        "min": [
+          -0.27480319142341614,
+          -0.2748030722141266,
+          -1.3400129079818726
+        ],
+        "max": [
+          0.2748033106327057,
+          0.27480337023735046,
+          0.015337205491960049
+        ],
+        "materials": [
+          "hanging_industrial_lamp",
+          "hanging_industrial_lamp_glass"
+        ]
+      }
+    ]
+  },
+  {
+    "file": "D:\\unityprojects\\Zombarvr\\ArtSource\\EnvironmentReview\\Lantern_01\\Lantern_01.gltf",
+    "objects": [
+      {
+        "name": "Lantern_01",
+        "tris": 30830,
+        "min": [
+          -0.061013076454401016,
+          -0.04859154298901558,
+          0.0
+        ],
+        "max": [
+          0.061072610318660736,
+          0.04859156534075737,
+          0.2942466139793396
+        ],
+        "materials": [
+          "Lantern_01_brass"
+        ]
+      },
+      {
+        "name": "Lantern_01_glass",
+        "tris": 3072,
+        "min": [
+          -0.0352444089949131,
+          -0.035257816314697266,
+          0.06138340383768082
+        ],
+        "max": [
+          0.035303886979818344,
+          0.03529048711061478,
+          0.12966422736644745
+        ],
+        "materials": [
+          "Lantern_01_glass"
+        ]
+      }
+    ]
+  },
+  {
+    "file": "D:\\unityprojects\\Zombarvr\\ArtSource\\EnvironmentReview\\rollershutter_window_02\\rollershutter_window_02.gltf",
+    "objects": [
+      {
+        "name": "rollershutter_window_02 ",
+        "tris": 560,
+        "min": [
+          -0.8000001311302185,
+          -0.1670706868171692,
+          2.2873277885082643e-06
+        ],
+        "max": [
+          0.8000001311302185,
+          0.0010000001639127731,
+          1.5608705282211304
+        ],
+        "materials": [
+          "rollershutter_window_02"
+        ]
+      },
+      {
+        "name": "rollershutter_window_02_graffiti",
+        "tris": 560,
+        "min": [
+          1.1999998092651367,
+          -0.1670706868171692,
+          2.2873277885082643e-06
+        ],
+        "max": [
+          2.8000001907348633,
+          0.0010000001639127731,
+          1.5608705282211304
+        ],
+        "materials": [
+          "rollershutter_window_02_graffiti"
+        ]
+      }
+    ]
+  },
+  {
+    "file": "D:\\unityprojects\\Zombarvr\\ArtSource\\EnvironmentReview\\wine_barrel_01\\wine_barrel_01.gltf",
+    "objects": [
+      {
+        "name": "wine_barrel_01_Lid",
+        "tris": 224,
+        "min": [
+          -0.2893601655960083,
+          -0.2894185185432434,
+          0.8220306038856506
+        ],
+        "max": [
+          0.28936314582824707,
+          0.2894226908683777,
+          0.8373162150382996
+        ],
+        "materials": [
+          "wine_barrel_01"
+        ]
+      },
+      {
+        "name": "wine_barrel_01_bung",
+        "tris": 168,
+        "min": [
+          -0.02382810413837433,
+          -0.38508278131484985,
+          0.41005033254623413
+        ],
+        "max": [
+          0.028619397431612015,
+          -0.3429100811481476,
+          0.46249890327453613
+        ],
+        "materials": [
+          "wine_barrel_01"
+        ]
+      },
+      {
+        "name": "wine_barrel_01",
+        "tris": 10204,
+        "min": [
+          -0.37094923853874207,
+          -0.37095266580581665,
+          0.0006841719150543213
+        ],
+        "max": [
+          0.3709522783756256,
+          0.37095293402671814,
+          0.8719475269317627
+        ],
+        "materials": [
+          "wine_barrel_01"
+        ]
+      },
+      {
+        "name": "wine_barrel_01_base",
+        "tris": 224,
+        "min": [
+          -0.2893602252006531,
+          -0.2894185185432434,
+          0.03523290157318115
+        ],
+        "max": [
+          0.28936323523521423,
+          0.28942275047302246,
+          0.050518572330474854
+        ],
+        "materials": [
+          "wine_barrel_01"
+        ]
+      }
+    ]
+  },
+  {
+    "file": "D:\\unityprojects\\Zombarvr\\ArtSource\\EnvironmentReview\\wine_bottles_01\\wine_bottles_01.gltf",
+    "objects": [
+      {
+        "name": "wine_bottles_01_bordeaux",
+        "tris": 6520,
+        "min": [
+          0.17273490130901337,
+          -0.037265077233314514,
+          0.00014235478010959923
+        ],
+        "max": [
+          0.2472650706768036,
+          0.037265077233314514,
+          0.2981816232204437
+        ],
+        "materials": [
+          "wine_bottles_01_glass_orange",
+          "wine_bottles_01_seal_cork",
+          "wine_bottles_01_wine_red",
+          "wine_bottles_01_ftero_vinea_02"
+        ]
+      },
+      {
+        "name": "wine_bottles_01_alsace",
+        "tris": 7720,
+        "min": [
+          -0.03603217005729675,
+          -0.036032143980264664,
+          0.0
+        ],
+        "max": [
+          0.03603211045265198,
+          0.03602645918726921,
+          0.3313671946525574
+        ],
+        "materials": [
+          "wine_bottles_01_glass_yellow",
+          "wine_bottles_01_seal_cork",
+          "wine_bottles_01_wine_clear",
+          "wine_bottles_01_clearwater"
+        ]
+      },
+      {
+        "name": "wine_bottles_01_burgundy",
+        "tris": 6408,
+        "min": [
+          0.36992666125297546,
+          -0.04007332772016525,
+          0.00016439915634691715
+        ],
+        "max": [
+          0.45007333159446716,
+          0.040073346346616745,
+          0.3061968684196472
+        ],
+        "materials": [
+          "wine_bottles_01_glass_clear",
+          "wine_bottles_01_seal_cork",
+          "wine_bottles_01_wine_light_red",
+          "wine_bottles_01_intertwine"
+        ]
+      },
+      {
+        "name": "wine_bottles_01_champagne",
+        "tris": 8200,
+        "min": [
+          0.5597074031829834,
+          -0.040292561054229736,
+          -5.820766091346741e-10
+        ],
+        "max": [
+          0.6402925252914429,
+          0.04027033969759941,
+          0.31552591919898987
+        ],
+        "materials": [
+          "wine_bottles_01_glass_green",
+          "wine_bottles_01_seal_cork",
+          "wine_bottles_01_wine_red",
+          "wine_bottles_01_ftero_vinea_01"
+        ]
+      }
+    ]
+  },
+  {
+    "file": "D:\\unityprojects\\Zombarvr\\ArtSource\\EnvironmentReview\\wooden_bookshelf_worn\\wooden_bookshelf_worn.gltf",
+    "objects": [
+      {
+        "name": "wooden_bookshelf_worn",
+        "tris": 10106,
+        "min": [
+          -0.68697589635849,
+          -0.29065099358558655,
+          -5.960464477539063e-08
+        ],
+        "max": [
+          0.68697589635849,
+          0.29065102338790894,
+          2.0634419918060303
+        ],
+        "materials": [
+          "wooden_bookshelf_worn"
+        ]
+      }
+    ]
+  },
+  {
+    "file": "D:\\unityprojects\\Zombarvr\\ArtSource\\EnvironmentReview\\backbar.glb",
+    "objects": [
+      {
+        "name": "Mesh_0",
+        "tris": 18193,
+        "min": [
+          -0.9506949186325073,
+          -0.24301300942897797,
+          -0.5127089619636536
+        ],
+        "max": [
+          0.9503709673881531,
+          0.2431899607181549,
+          0.5101670026779175
+        ],
+        "materials": [
+          "Material_0"
+        ]
+      }
+    ]
+  },
+  {
+    "file": "D:\\unityprojects\\Zombarvr\\ArtSource\\EnvironmentReview\\casement_window.glb",
+    "objects": [
+      {
+        "name": "window_body",
+        "tris": 8092,
+        "min": [
+          -0.550000011920929,
+          -0.10999999940395355,
+          0.0
+        ],
+        "max": [
+          0.550000011920929,
+          0.10999999940395355,
+          1.2300000190734863
+        ],
+        "materials": [
+          "window_body_pbr"
+        ]
+      },
+      {
+        "name": "window_sash_l",
+        "tris": 1016,
+        "min": [
+          -0.4465000033378601,
+          0.02449999749660492,
+          0.09199999272823334
+        ],
+        "max": [
+          -0.0020000040531158447,
+          0.09000000357627869,
+          1.1679999828338623
+        ],
+        "materials": [
+          "window_sash_l_pbr"
+        ]
+      },
+      {
+        "name": "window_sash_l_glass",
+        "tris": 12,
+        "min": [
+          -0.39100000262260437,
+          0.060499999672174454,
+          0.13899999856948853
+        ],
+        "max": [
+          -0.04899999499320984,
+          0.06450000405311584,
+          1.121000051498413
+        ],
+        "materials": [
+          "window_glass"
+        ]
+      },
+      {
+        "name": "window_sash_r",
+        "tris": 1700,
+        "min": [
+          -0.013999998569488525,
+          -0.015799999237060547,
+          0.09199999272823334
+        ],
+        "max": [
+          0.4465000033378601,
+          0.09000000357627869,
+          1.1679999828338623
+        ],
+        "materials": [
+          "window_sash_r_pbr"
+        ]
+      },
+      {
+        "name": "window_sash_r_glass",
+        "tris": 12,
+        "min": [
+          0.04899999499320984,
+          0.060499999672174454,
+          0.13899999856948853
+        ],
+        "max": [
+          0.39100000262260437,
+          0.06450000405311584,
+          1.121000051498413
+        ],
+        "materials": [
+          "window_glass"
+        ]
+      }
+    ]
+  },
+  {
+    "file": "D:\\unityprojects\\Zombarvr\\ArtSource\\EnvironmentReview\\tavern_counter.glb",
+    "objects": [
+      {
+        "name": "Mesh_0",
+        "tris": 11560,
+        "min": [
+          -0.951711893081665,
+          -0.24004296958446503,
+          -0.22385196387767792
+        ],
+        "max": [
+          0.9510129690170288,
+          0.23933899402618408,
+          0.2220669835805893
+        ],
+        "materials": [
+          "Material_0"
+        ]
+      }
+    ]
+  },
+  {
+    "file": "D:\\unityprojects\\Zombarvr\\ArtSource\\EnvironmentReview\\tray.glb",
+    "objects": [
+      {
+        "name": "Mesh_0",
+        "tris": 34132,
+        "min": [
+          -0.9506069421768188,
+          -0.5323454141616821,
+          -0.5186330080032349
+        ],
+        "max": [
+          0.9485989809036255,
+          0.5347154140472412,
+          0.5168969631195068
+        ],
+        "materials": [
+          "Material_0"
+        ]
+      }
+    ]
+  }
+]

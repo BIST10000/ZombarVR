@@ -1,0 +1,1079 @@
+{
+  "models": [
+    {
+      "name": "Counter",
+      "source": "tavern_counter.glb",
+      "select": "",
+      "size": [
+        5.4,
+        1.25,
+        1.21
+      ],
+      "budget": 14000,
+      "materials": [
+        {
+          "name": "Counter__Material_0",
+          "original": "Material_0",
+          "albedo": "Counter/1_albedo.png",
+          "normal": "Counter/0_normal.png",
+          "metal": "Counter/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": false
+        }
+      ]
+    },
+    {
+      "name": "Backbar",
+      "source": "backbar.glb",
+      "select": "",
+      "size": [
+        3.1,
+        0.62,
+        1.7
+      ],
+      "budget": 19000,
+      "materials": [
+        {
+          "name": "Backbar__Material_0",
+          "original": "Material_0",
+          "albedo": "Backbar/1_albedo.png",
+          "normal": "Backbar/0_normal.png",
+          "metal": "Backbar/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": false
+        }
+      ]
+    },
+    {
+      "name": "Window",
+      "source": "casement_window.glb",
+      "select": "",
+      "size": [
+        1.75,
+        0.29,
+        1.95
+      ],
+      "budget": 12000,
+      "materials": [
+        {
+          "name": "Window__window_body_pbr",
+          "original": "window_body_pbr",
+          "albedo": "Window/1_albedo.png",
+          "normal": "Window/0_normal.png",
+          "metal": "Window/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": false
+        },
+        {
+          "name": "Window__window_glass",
+          "original": "window_glass",
+          "albedo": "",
+          "normal": "",
+          "metal": "",
+          "ao": "",
+          "emission": "",
+          "color": [
+            0.9646862745285034,
+            0.9386857151985168,
+            0.8962693810462952,
+            0.14000000059604645
+          ],
+          "metallic": 0,
+          "smoothness": 0.9600000008940697,
+          "cutout": false,
+          "transparent": true,
+          "transmission": false
+        },
+        {
+          "name": "Window__window_sash_l_pbr",
+          "original": "window_sash_l_pbr",
+          "albedo": "Window/4_albedo.png",
+          "normal": "Window/3_normal.png",
+          "metal": "Window/5_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": false
+        },
+        {
+          "name": "Window__window_sash_r_pbr",
+          "original": "window_sash_r_pbr",
+          "albedo": "Window/7_albedo.png",
+          "normal": "Window/6_normal.png",
+          "metal": "Window/8_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": false
+        }
+      ]
+    },
+    {
+      "name": "Bottle",
+      "source": "wine_bottles_01/wine_bottles_01.gltf",
+      "select": "bordeaux",
+      "size": [
+        0,
+        0,
+        0.28
+      ],
+      "budget": 6500,
+      "materials": [
+        {
+          "name": "Bottle__wine_bottles_01_glass_orange",
+          "original": "wine_bottles_01_glass_orange",
+          "albedo": "Bottle/1_albedo.png",
+          "normal": "Bottle/0_normal.png",
+          "metal": "Bottle/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": true
+        },
+        {
+          "name": "Bottle__wine_bottles_01_seal_cork",
+          "original": "wine_bottles_01_seal_cork",
+          "albedo": "Bottle/3_albedo.png",
+          "normal": "Bottle/0_normal.png",
+          "metal": "Bottle/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": true,
+          "transparent": false,
+          "transmission": false
+        },
+        {
+          "name": "Bottle__wine_bottles_01_wine_red",
+          "original": "wine_bottles_01_wine_red",
+          "albedo": "",
+          "normal": "",
+          "metal": "",
+          "ao": "",
+          "emission": "",
+          "color": [
+            0.5224650502204895,
+            0.04925941303372383,
+            0.024301469326019287,
+            1
+          ],
+          "metallic": 0,
+          "smoothness": 0.8717948496341705,
+          "cutout": false,
+          "transparent": false,
+          "transmission": true
+        },
+        {
+          "name": "Bottle__wine_bottles_01_ftero_vinea_02",
+          "original": "wine_bottles_01_ftero_vinea_02",
+          "albedo": "Bottle/5_albedo.png",
+          "normal": "Bottle/4_normal.png",
+          "metal": "Bottle/6_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": true,
+          "transparent": false,
+          "transmission": false
+        },
+        {
+          "name": "Bottle__wine_bottles_01_glass_yellow",
+          "original": "wine_bottles_01_glass_yellow",
+          "albedo": "Bottle/1_albedo.png",
+          "normal": "Bottle/0_normal.png",
+          "metal": "Bottle/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": true
+        },
+        {
+          "name": "Bottle__wine_bottles_01_wine_clear",
+          "original": "wine_bottles_01_wine_clear",
+          "albedo": "",
+          "normal": "",
+          "metal": "",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            0.9324522614479065,
+            0.7874122262001038,
+            1
+          ],
+          "metallic": 0,
+          "smoothness": 0.7948717772960663,
+          "cutout": false,
+          "transparent": false,
+          "transmission": true
+        },
+        {
+          "name": "Bottle__wine_bottles_01_clearwater",
+          "original": "wine_bottles_01_clearwater",
+          "albedo": "Bottle/7_albedo.png",
+          "normal": "Bottle/4_normal.png",
+          "metal": "Bottle/8_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": true,
+          "transparent": false,
+          "transmission": false
+        },
+        {
+          "name": "Bottle__wine_bottles_01_glass_clear",
+          "original": "wine_bottles_01_glass_clear",
+          "albedo": "Bottle/1_albedo.png",
+          "normal": "Bottle/0_normal.png",
+          "metal": "Bottle/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": true
+        },
+        {
+          "name": "Bottle__wine_bottles_01_wine_light_red",
+          "original": "wine_bottles_01_wine_light_red",
+          "albedo": "",
+          "normal": "",
+          "metal": "",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            0.08782617002725601,
+            0.04163853079080582,
+            1
+          ],
+          "metallic": 0,
+          "smoothness": 0.8717948496341705,
+          "cutout": false,
+          "transparent": false,
+          "transmission": true
+        },
+        {
+          "name": "Bottle__wine_bottles_01_intertwine",
+          "original": "wine_bottles_01_intertwine",
+          "albedo": "Bottle/9_albedo.png",
+          "normal": "Bottle/4_normal.png",
+          "metal": "Bottle/10_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": true,
+          "transparent": false,
+          "transmission": false
+        },
+        {
+          "name": "Bottle__wine_bottles_01_glass_green",
+          "original": "wine_bottles_01_glass_green",
+          "albedo": "Bottle/1_albedo.png",
+          "normal": "Bottle/0_normal.png",
+          "metal": "Bottle/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": true
+        },
+        {
+          "name": "Bottle__wine_bottles_01_ftero_vinea_01",
+          "original": "wine_bottles_01_ftero_vinea_01",
+          "albedo": "Bottle/11_albedo.png",
+          "normal": "Bottle/4_normal.png",
+          "metal": "Bottle/12_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": true,
+          "transparent": false,
+          "transmission": false
+        }
+      ]
+    },
+    {
+      "name": "BottleAlt",
+      "source": "wine_bottles_01/wine_bottles_01.gltf",
+      "select": "champagne",
+      "size": [
+        0,
+        0,
+        0.31
+      ],
+      "budget": 6500,
+      "materials": [
+        {
+          "name": "BottleAlt__wine_bottles_01_glass_orange",
+          "original": "wine_bottles_01_glass_orange",
+          "albedo": "BottleAlt/1_albedo.png",
+          "normal": "BottleAlt/0_normal.png",
+          "metal": "BottleAlt/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": true
+        },
+        {
+          "name": "BottleAlt__wine_bottles_01_seal_cork",
+          "original": "wine_bottles_01_seal_cork",
+          "albedo": "BottleAlt/3_albedo.png",
+          "normal": "BottleAlt/0_normal.png",
+          "metal": "BottleAlt/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": true,
+          "transparent": false,
+          "transmission": false
+        },
+        {
+          "name": "BottleAlt__wine_bottles_01_wine_red",
+          "original": "wine_bottles_01_wine_red",
+          "albedo": "",
+          "normal": "",
+          "metal": "",
+          "ao": "",
+          "emission": "",
+          "color": [
+            0.5224650502204895,
+            0.04925941303372383,
+            0.024301469326019287,
+            1
+          ],
+          "metallic": 0,
+          "smoothness": 0.8717948496341705,
+          "cutout": false,
+          "transparent": false,
+          "transmission": true
+        },
+        {
+          "name": "BottleAlt__wine_bottles_01_ftero_vinea_02",
+          "original": "wine_bottles_01_ftero_vinea_02",
+          "albedo": "BottleAlt/5_albedo.png",
+          "normal": "BottleAlt/4_normal.png",
+          "metal": "BottleAlt/6_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": true,
+          "transparent": false,
+          "transmission": false
+        },
+        {
+          "name": "BottleAlt__wine_bottles_01_glass_yellow",
+          "original": "wine_bottles_01_glass_yellow",
+          "albedo": "BottleAlt/1_albedo.png",
+          "normal": "BottleAlt/0_normal.png",
+          "metal": "BottleAlt/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": true
+        },
+        {
+          "name": "BottleAlt__wine_bottles_01_wine_clear",
+          "original": "wine_bottles_01_wine_clear",
+          "albedo": "",
+          "normal": "",
+          "metal": "",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            0.9324522614479065,
+            0.7874122262001038,
+            1
+          ],
+          "metallic": 0,
+          "smoothness": 0.7948717772960663,
+          "cutout": false,
+          "transparent": false,
+          "transmission": true
+        },
+        {
+          "name": "BottleAlt__wine_bottles_01_clearwater",
+          "original": "wine_bottles_01_clearwater",
+          "albedo": "BottleAlt/7_albedo.png",
+          "normal": "BottleAlt/4_normal.png",
+          "metal": "BottleAlt/8_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": true,
+          "transparent": false,
+          "transmission": false
+        },
+        {
+          "name": "BottleAlt__wine_bottles_01_glass_clear",
+          "original": "wine_bottles_01_glass_clear",
+          "albedo": "BottleAlt/1_albedo.png",
+          "normal": "BottleAlt/0_normal.png",
+          "metal": "BottleAlt/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": true
+        },
+        {
+          "name": "BottleAlt__wine_bottles_01_wine_light_red",
+          "original": "wine_bottles_01_wine_light_red",
+          "albedo": "",
+          "normal": "",
+          "metal": "",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            0.08782617002725601,
+            0.04163853079080582,
+            1
+          ],
+          "metallic": 0,
+          "smoothness": 0.8717948496341705,
+          "cutout": false,
+          "transparent": false,
+          "transmission": true
+        },
+        {
+          "name": "BottleAlt__wine_bottles_01_intertwine",
+          "original": "wine_bottles_01_intertwine",
+          "albedo": "BottleAlt/9_albedo.png",
+          "normal": "BottleAlt/4_normal.png",
+          "metal": "BottleAlt/10_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": true,
+          "transparent": false,
+          "transmission": false
+        },
+        {
+          "name": "BottleAlt__wine_bottles_01_glass_green",
+          "original": "wine_bottles_01_glass_green",
+          "albedo": "BottleAlt/1_albedo.png",
+          "normal": "BottleAlt/0_normal.png",
+          "metal": "BottleAlt/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": true
+        },
+        {
+          "name": "BottleAlt__wine_bottles_01_ftero_vinea_01",
+          "original": "wine_bottles_01_ftero_vinea_01",
+          "albedo": "BottleAlt/11_albedo.png",
+          "normal": "BottleAlt/4_normal.png",
+          "metal": "BottleAlt/12_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": true,
+          "transparent": false,
+          "transmission": false
+        }
+      ]
+    },
+    {
+      "name": "Glass",
+      "source": "brass_goblets/brass_goblets.gltf",
+      "select": "brass_goblet_01",
+      "size": [
+        0,
+        0,
+        0.18
+      ],
+      "budget": 3500,
+      "materials": [
+        {
+          "name": "Glass__brass_goblets_01",
+          "original": "brass_goblets_01",
+          "albedo": "Glass/1_albedo.png",
+          "normal": "Glass/0_normal.png",
+          "metal": "Glass/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": false
+        },
+        {
+          "name": "Glass__brass_goblets_02",
+          "original": "brass_goblets_02",
+          "albedo": "Glass/4_albedo.png",
+          "normal": "Glass/3_normal.png",
+          "metal": "Glass/5_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": false
+        },
+        {
+          "name": "Glass__brass_goblets_03",
+          "original": "brass_goblets_03",
+          "albedo": "Glass/7_albedo.png",
+          "normal": "Glass/6_normal.png",
+          "metal": "Glass/8_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": false
+        }
+      ]
+    },
+    {
+      "name": "Pendant",
+      "source": "hanging_industrial_lamp/hanging_industrial_lamp.gltf",
+      "select": "",
+      "size": [
+        0,
+        0,
+        1.35
+      ],
+      "budget": 10000,
+      "materials": [
+        {
+          "name": "Pendant__hanging_industrial_lamp",
+          "original": "hanging_industrial_lamp",
+          "albedo": "Pendant/2_albedo.png",
+          "normal": "Pendant/1_normal.png",
+          "metal": "Pendant/3_metal.png",
+          "ao": "",
+          "emission": "Pendant/0_emission.png",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": false
+        },
+        {
+          "name": "Pendant__hanging_industrial_lamp_glass",
+          "original": "hanging_industrial_lamp_glass",
+          "albedo": "",
+          "normal": "Pendant/4_normal.png",
+          "metal": "",
+          "ao": "",
+          "emission": "",
+          "color": [
+            0.800000011920929,
+            0.800000011920929,
+            0.800000011920929,
+            1
+          ],
+          "metallic": 0,
+          "smoothness": 0.8999999985098839,
+          "cutout": false,
+          "transparent": false,
+          "transmission": true
+        }
+      ]
+    },
+    {
+      "name": "Lantern",
+      "source": "Lantern_01/Lantern_01.gltf",
+      "select": "",
+      "size": [
+        0,
+        0,
+        0.36
+      ],
+      "budget": 6500,
+      "materials": [
+        {
+          "name": "Lantern__Lantern_01_brass",
+          "original": "Lantern_01_brass",
+          "albedo": "Lantern/1_albedo.png",
+          "normal": "Lantern/0_normal.png",
+          "metal": "Lantern/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": true
+        },
+        {
+          "name": "Lantern__Lantern_01_glass",
+          "original": "Lantern_01_glass",
+          "albedo": "Lantern/3_albedo.png",
+          "normal": "Lantern/0_normal.png",
+          "metal": "Lantern/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": true,
+          "transmission": false
+        }
+      ]
+    },
+    {
+      "name": "Stool",
+      "source": "bar_chair_round_01/bar_chair_round_01.gltf",
+      "select": "",
+      "size": [
+        0,
+        0,
+        0.78
+      ],
+      "budget": 6500,
+      "materials": [
+        {
+          "name": "Stool__Bar Chair",
+          "original": "Bar Chair",
+          "albedo": "Stool/1_albedo.png",
+          "normal": "Stool/0_normal.png",
+          "metal": "Stool/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": false
+        }
+      ]
+    },
+    {
+      "name": "Barrel",
+      "source": "wine_barrel_01/wine_barrel_01.gltf",
+      "select": "",
+      "size": [
+        0,
+        0,
+        0.95
+      ],
+      "budget": 6500,
+      "materials": [
+        {
+          "name": "Barrel__wine_barrel_01",
+          "original": "wine_barrel_01",
+          "albedo": "Barrel/1_albedo.png",
+          "normal": "Barrel/0_normal.png",
+          "metal": "Barrel/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": false
+        }
+      ]
+    },
+    {
+      "name": "Cabinet",
+      "source": "GothicCabinet_01/GothicCabinet_01.gltf",
+      "select": "",
+      "size": [
+        0,
+        0,
+        1.9
+      ],
+      "budget": 13000,
+      "materials": [
+        {
+          "name": "Cabinet__GothicCabinet_01",
+          "original": "GothicCabinet_01",
+          "albedo": "Cabinet/1_albedo.png",
+          "normal": "Cabinet/0_normal.png",
+          "metal": "Cabinet/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": false
+        }
+      ]
+    },
+    {
+      "name": "Tray",
+      "source": "tray.glb",
+      "select": "",
+      "size": [
+        0.52,
+        0.4,
+        0.045
+      ],
+      "budget": 3000,
+      "materials": [
+        {
+          "name": "Tray__Material_0",
+          "original": "Material_0",
+          "albedo": "Tray/0_albedo.png",
+          "normal": "Tray/2_normal.png",
+          "metal": "Tray/1_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": false
+        }
+      ]
+    },
+    {
+      "name": "Hatchet",
+      "source": "hatchet/hatchet.gltf",
+      "select": "",
+      "size": [
+        0,
+        0,
+        0.32
+      ],
+      "budget": 9000,
+      "materials": [
+        {
+          "name": "Hatchet__hatchet",
+          "original": "hatchet",
+          "albedo": "Hatchet/1_albedo.png",
+          "normal": "Hatchet/0_normal.png",
+          "metal": "Hatchet/2_metal.png",
+          "ao": "",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": false,
+          "transmission": false
+        }
+      ]
+    },
+    {
+      "name": "BloodFlask",
+      "source": "leather.glb",
+      "select": "",
+      "size": [
+        0,
+        0,
+        0.28
+      ],
+      "budget": 12000,
+      "materials": [
+        {
+          "name": "BloodFlask__Scene_-_Root",
+          "original": "Scene_-_Root",
+          "albedo": "BloodFlask/0_albedo.png",
+          "normal": "BloodFlask/2_normal.png",
+          "metal": "BloodFlask/1_metal.png",
+          "ao": "BloodFlask/1_ao.png",
+          "emission": "",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": true,
+          "transmission": false
+        }
+      ]
+    },
+    {
+      "name": "CocktailShaker",
+      "source": "379336c0082e4c42ab2ae009ed92f563.glb",
+      "select": "",
+      "size": [
+        0,
+        0,
+        0.18
+      ],
+      "budget": 9000,
+      "materials": [
+        {
+          "name": "CocktailShaker__lambert1",
+          "original": "lambert1",
+          "albedo": "CocktailShaker/0_albedo.png",
+          "normal": "CocktailShaker/3_normal.png",
+          "metal": "CocktailShaker/1_metal.png",
+          "ao": "CocktailShaker/1_ao.png",
+          "emission": "CocktailShaker/2_emission.png",
+          "color": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "metallic": 1,
+          "smoothness": 0,
+          "cutout": false,
+          "transparent": true,
+          "transmission": false
+        }
+      ]
+    }
+  ]
+}

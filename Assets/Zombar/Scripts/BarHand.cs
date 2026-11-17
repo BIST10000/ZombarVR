@@ -42,7 +42,7 @@ namespace Zombar
                 transform.SetPositionAndRotation(trackingSpace.TransformPoint(pos), trackingSpace.rotation * rot);
                 grip = device.TryGetFeatureValue(CommonUsages.gripButton, out bool down) && down;
             }
-            else if (!XRSettings.isDeviceActive && node == XRNode.RightHand && view != null)
+            else if (!XRSettings.isDeviceActive && node == BarPlayerInput.DesktopHand && view != null)
             {
                 tracked = true;
                 var mouse = Mouse.current;
@@ -50,7 +50,8 @@ namespace Zombar
                 if (mouse != null) desktopDistance = Mathf.Clamp(desktopDistance + mouse.scroll.ReadValue().y * 0.001f, 0.25f, 1.5f);
                 desktopTurn = Quaternion.Slerp(desktopTurn, keyboard != null && keyboard.fKey.isPressed ? Quaternion.Euler(0, 0, 115) : Quaternion.identity, Time.deltaTime * 10);
                 Vector3 shake = keyboard != null && keyboard.spaceKey.isPressed ? Vector3.up * (Mathf.Sin(Time.time * 20) * 0.14f) : Vector3.zero;
-                transform.SetPositionAndRotation(view.transform.position + view.transform.forward * desktopDistance + shake,
+                transform.SetPositionAndRotation(view.transform.position + view.transform.forward * desktopDistance +
+                    view.transform.right * .12f - view.transform.up * .18f + shake,
                     view.transform.rotation * desktopTurn);
                 grip = mouse != null && mouse.leftButton.isPressed;
             }

@@ -21,7 +21,7 @@ namespace Zombar
         private LineRenderer stream;
         private BarProp selectedOffer;
         private ZombieBarGame Game => ZombieBarGame.Instance;
-        public static readonly string[] Recipes = { "Кровавый флип", "Гнилой сауэр", "Глазной хайбол" };
+        public static readonly string[] Recipes = CocktailRecipes.Names;
 
         private void Awake() { Instance = this; }
         private void Start()
@@ -40,16 +40,31 @@ namespace Zombar
             stream = lineObject.AddComponent<LineRenderer>();
             stream.positionCount = 2;
             stream.startWidth = 0.012f; stream.endWidth = 0.008f;
-            stream.sharedMaterial = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+            stream.sharedMaterial = new Material(Resources.Load<Material>("PhysicalBar/BloodStream"));
             stream.sharedMaterial.color = new Color(0.42f, 0.015f, 0.025f);
             stream.enabled = false;
+            foreach (var prop in BarProp.All)
+            {
+                if (prop.kind != PropKind.Glass) continue;
+                var liquid = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                liquid.name = "Drink liquid";
+                Destroy(liquid.GetComponent<Collider>());
+                liquid.transform.SetParent(prop.transform, false);
+                liquid.transform.localPosition = Vector3.up * .14f;
+                liquid.transform.localScale = new Vector3(.064f, .003f, .064f);
+                liquid.GetComponent<Renderer>().sharedMaterial = Resources.Load<Material>("PhysicalBar/BloodStream");
+                liquid.GetComponent<Renderer>().enabled = false;
+            }
             RefillTray();
+            gameObject.AddComponent<BarWorkflow>();
+            gameObject.AddComponent<BarMixer>();
             Game?.Hud?.SetHint("Хват — взять и удерживать · наклон — налить · движение рукой — удар или работа инструментом");
         }
 
         public static GameObject MakeVisual(string model, Transform parent, Vector3 size, Color tint)
         {
-            var prefab = Resources.Load<GameObject>("PhysicalBar/Models/" + model);
+            var prefab = Resources.Load<GameObject>("PhysicalBar/Props/" + model);
+            if (prefab == null) prefab = Resources.Load<GameObject>("PhysicalBar/Models/" + model);
             if (prefab == null) throw new System.InvalidOperationException("Missing authored model: " + model);
             var obj = Instantiate(prefab, parent, false);
             obj.name = model;
@@ -92,21 +107,20 @@ namespace Zombar
 
         public bool AddIngredient(BarProp container, PropKind ingredient)
         {
+            if (GetComponent<BarMixer>()?.Running == true) return false;
             if (container == null || container.kind != PropKind.Shaker || container.recipe >= 0 || container.blood + container.eyes + container.flesh >= 3) return false;
             if (ingredient == PropKind.Eye) container.eyes++;
             else if (ingredient == PropKind.Flesh) container.flesh++;
             else if (ingredient == PropKind.BloodBottle) container.blood++;
             else return false;
             container.mixed = 0;
-            Game?.Tell("В шейкере: кровь " + container.blood + ", глаза " + container.eyes + ", плоть " + container.flesh + ". Закройте хватом и встряхните.");
+            Game?.Tell("В шейкере: кровь " + container.blood + ", глаза " + container.eyes + ", плоть " + container.flesh + ". Нажмите кнопку миксера.");
             return true;
         }
 
         public bool FinishMix(BarProp container)
         {
-            int recipe = container.blood == 1 && container.eyes == 1 && container.flesh == 0 ? 0 :
-                         container.blood == 1 && container.flesh == 1 && container.eyes == 0 ? 1 :
-                         container.eyes == 1 && container.flesh == 1 && container.blood == 0 ? 2 : -1;
+            int recipe = CocktailRecipes.Match(container.blood, container.eyes, container.flesh);
             if (recipe < 0) { Game?.Tell("Смесь испорчена. Переверните шейкер над раковиной справа."); return false; }
             container.recipe = recipe;
             container.quality = Game != null ? Game.PhysicalQuality : 50;
@@ -149,9 +163,9 @@ namespace Zombar
                     continue;
                 }
                 if (Game.GameOver) continue;
-                if ((prop.kind == PropKind.Eye || prop.kind == PropKind.Flesh) && !prop.IsHeld && shaker != null &&
-                    Vector3.Distance(prop.transform.position, shaker.transform.position + shaker.transform.up * 0.14f) < 0.12f && AddIngredient(shaker, prop.kind))
-                { lastPositions.Remove(prop); Destroy(prop.gameObject); continue; }
+                if ((prop.kind == PropKind.Eye || prop.kind == PropKind.Flesh) && shaker != null && !shaker.IsHeld && !GetComponent<BarMixer>().Running &&
+                    Vector3.Distance(prop.transform.position, shaker.transform.position + shaker.transform.up * 0.25f) < 0.16f && AddIngredient(shaker, prop.kind))
+                { prop.Release(Vector3.zero); lastPositions.Remove(prop); Destroy(prop.gameObject); continue; }
                 if (prop.kind == PropKind.BloodBottle || prop.kind == PropKind.Shaker) ProcessPour(prop);
                 if (prop.kind == PropKind.Glass && prop.recipe >= 0)
                 {
@@ -193,14 +207,14 @@ namespace Zombar
             bool tilted = Vector3.Dot(prop.transform.up, Vector3.up) < 0.2f;
             if (!tilted) { prop.poured = false; return; }
             if (!prop.IsHeld || prop.poured) return;
-            Vector3 mouth = prop.transform.position + prop.transform.up * (prop.kind == PropKind.BloodBottle ? 0.28f : 0.175f);
+            Vector3 mouth = prop.transform.position + prop.transform.up * (prop.kind == PropKind.BloodBottle ? 0.28f : 0.25f);
             stream.enabled = true; stream.SetPosition(0, mouth); stream.SetPosition(1, mouth + Vector3.down * 0.28f);
             foreach (var candidate in frameProps)
             {
                 if (candidate == null || candidate == prop) continue;
                 Vector3 delta = mouth - (candidate.transform.position + Vector3.up * 0.08f);
                 if (new Vector2(delta.x, delta.z).magnitude > 0.13f || delta.y < 0 || delta.y > 0.4f) continue;
-                if (prop.kind == PropKind.BloodBottle && candidate.kind == PropKind.Shaker && candidate.recipe < 0 &&
+                if (prop.kind == PropKind.BloodBottle && candidate.kind == PropKind.Shaker && candidate.recipe < 0 && GetComponent<BarMixer>()?.Running != true &&
                     candidate.blood + candidate.eyes + candidate.flesh < 3 && Game.TakePhysicalStock(PropKind.BloodBottle))
                 { AddIngredient(candidate, PropKind.BloodBottle); prop.poured = true; return; }
                 if (prop.kind == PropKind.Shaker && TransferDrink(prop, candidate)) { prop.poured = true; return; }
@@ -256,3 +270,4 @@ namespace Zombar
         private void OnDestroy() { if (stream != null) { Destroy(stream.sharedMaterial); Destroy(stream.gameObject); } }
     }
 }
+

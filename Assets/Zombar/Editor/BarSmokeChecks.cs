@@ -24,8 +24,45 @@ namespace ZombarEditor
             try
             {
                 Check(UnityEngine.Object.FindObjectsByType<BarTarget>().Length == 0, "No legacy action buttons remain");
-                Check(PhysicalBar.Instance != null && BarProp.All.Count >= 12, "Physical workbench populated");
+                Check(PhysicalBar.Instance != null && BarProp.All.Count >= 12,
+                    "Physical workbench populated; instance=" + PhysicalBar.Instance + "; props=" + BarProp.All.Count);
                 passed.Add("Physical workbench replaces all action buttons");
+                var initialPatrons = (IList)Read(game, "patrons");
+                int titans = 0;
+                foreach (var client in initialPatrons)
+                {
+                    var root = (GameObject)Read(client, "root");
+                    var animator = root.GetComponentInChildren<Animator>();
+                    Check(animator.avatar != null && animator.avatar.isHuman && animator.avatar.isValid,
+                        "External character has valid animated Humanoid rig");
+                    foreach (var renderer in root.GetComponentsInChildren<SkinnedMeshRenderer>())
+                        foreach (var material in renderer.sharedMaterials)
+                            Check(material.GetTexture("_BaseMap") != null, "External character retains its authored texture");
+                    if (!(bool)Read(client, "giant")) continue;
+                    titans++;
+                    var meshes = root.GetComponentsInChildren<SkinnedMeshRenderer>();
+                    Check(Array.Exists(meshes, r => r.sharedMesh.name.ToLowerInvariant().Contains("mutant")),
+                        "Titan uses the distinct Mutant mesh");
+                    Bounds bounds = meshes[0].bounds;
+                    foreach (var renderer in meshes) bounds.Encapsulate(renderer.bounds);
+                    Check(bounds.size.y > 2.6f, "Titan is visibly taller than normal patrons");
+                }
+                Check(titans == 1, "First shift contains one guaranteed titan");
+                passed.Add("External textured Humanoid characters and guaranteed full-size Mutant titan");
+                var environment = GameObject.Find("CC0 Environment");
+                Check(environment != null, "Imported environment exists");
+                foreach (string model in new[] { "Counter", "Window", "Pendant", "Backbar", "Stool" })
+                {
+                    var item = environment.transform.Find(model);
+                    Check(item != null && item.GetComponentsInChildren<MeshFilter>().Length > 0, "Imported " + model);
+                    Check(Array.Exists(item.GetComponentsInChildren<Renderer>(), r =>
+                        Array.Exists(r.sharedMaterials, m => m.GetTexture("_BaseMap") != null)), "Authored PBR maps for " + model);
+                }
+                var bottle = BarProp.All.Find(p => p.kind == PropKind.BloodBottle);
+                Check(bottle.GetComponent<BoxCollider>().size.y > .26f && bottle.GetComponent<BoxCollider>().size.y < .31f,
+                    "Replacement bottle collider and pour height agree");
+                passed.Add("CC0 environment imports, PBR materials and playable bottle dimensions");
+                passed.Add(DesktopInputChecks.Run());
                 passed.Add(PhysicalInteractionChecks.Run());
                 game.RestartRound();
                 var patrons = (IList)Read(game, "patrons");
@@ -79,6 +116,16 @@ namespace ZombarEditor
                 Set(game, "punchReady", 0f);
                 Call(game, "PunchPatron", (string)Read(giant, "id"));
                 Check(!(bool)Read(giant, "corpse") && (int)Read(game, "playerHealth") == 2, "giant cannot be defeated");
+                int titanHealth = (int)Read(giant, "health");
+                Set(game, "playerHealth", 100);
+                Set(game, "strengthLevel", 99);
+                for (int hit = 0; hit < 20; hit++)
+                {
+                    Set(game, "punchReady", 0f);
+                    game.PhysicalPunch((string)Read(giant, "id"));
+                }
+                Check(!(bool)Read(giant, "corpse") && (int)Read(giant, "health") == titanHealth,
+                    "Twenty maximum-strength physical punches cannot kill or damage the titan");
                 passed.Add("Combat, corpse loot and invulnerable giant");
 
                 game.RestartRound();
@@ -111,6 +158,7 @@ namespace ZombarEditor
             string result = "PASS " + passed.Count + " scenarios\n" + string.Join("\n", passed);
             System.IO.Directory.CreateDirectory("Builds/Validation");
             System.IO.File.WriteAllText("Builds/Validation/gameplay-checks.txt", result);
+            if (System.IO.File.Exists("Builds/Validation/failure.txt")) System.IO.File.Delete("Builds/Validation/failure.txt");
             return result;
         }
     }

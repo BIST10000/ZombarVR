@@ -1,0 +1,152 @@
+[
+  {
+    "name": "Counter",
+    "triangles": 11560,
+    "source": "tavern_counter.glb",
+    "size_xyz_blender": [
+      5.399999956948875,
+      1.2500000503389366,
+      1.2100000109806643
+    ]
+  },
+  {
+    "name": "Backbar",
+    "triangles": 18193,
+    "source": "backbar.glb",
+    "size_xyz_blender": [
+      3.0999999114284975,
+      0.6200000042449734,
+      1.7000000390705168
+    ]
+  },
+  {
+    "name": "Window",
+    "triangles": 10832,
+    "source": "casement_window.glb",
+    "size_xyz_blender": [
+      1.7499999425627948,
+      0.2900000103495337,
+      1.9499999301026492
+    ]
+  },
+  {
+    "name": "Bottle",
+    "triangles": 6500,
+    "source": "wine_bottles_01/wine_bottles_01.gltf",
+    "size_xyz_blender": [
+      0.07001911980109021,
+      0.070019105801844,
+      0.27999999757644156
+    ]
+  },
+  {
+    "name": "BottleAlt",
+    "triangles": 6499,
+    "source": "wine_bottles_01/wine_bottles_01.gltf",
+    "size_xyz_blender": [
+      0.0791738078890134,
+      0.07915197570244037,
+      0.3100000087252827
+    ]
+  },
+  {
+    "name": "Glass",
+    "triangles": 3072,
+    "source": "brass_goblets/brass_goblets.gltf",
+    "size_xyz_blender": [
+      0.09904477874522755,
+      0.09904477381450505,
+      0.17999999891404883
+    ]
+  },
+  {
+    "name": "Pendant",
+    "triangles": 9530,
+    "source": "hanging_industrial_lamp/hanging_industrial_lamp.gltf",
+    "size_xyz_blender": [
+      0.5474369978782434,
+      0.5474369385088806,
+      1.350000035331254
+    ]
+  },
+  {
+    "name": "Lantern",
+    "triangles": 6498,
+    "source": "Lantern_01/Lantern_01.gltf",
+    "size_xyz_blender": [
+      0.14936738594997756,
+      0.11889998928944578,
+      0.36000000259181775
+    ]
+  },
+  {
+    "name": "Stool",
+    "triangles": 6500,
+    "source": "bar_chair_round_01/bar_chair_round_01.gltf",
+    "size_xyz_blender": [
+      0.5021091380253981,
+      0.5050663067186818,
+      0.7799999859435297
+    ]
+  },
+  {
+    "name": "Barrel",
+    "triangles": 6497,
+    "source": "wine_barrel_01/wine_barrel_01.gltf",
+    "size_xyz_blender": [
+      0.8089476429877891,
+      0.8243591581856009,
+      0.94999999513918
+    ]
+  },
+  {
+    "name": "Cabinet",
+    "triangles": 12170,
+    "source": "GothicCabinet_01/GothicCabinet_01.gltf",
+    "size_xyz_blender": [
+      1.383528213064963,
+      0.9083243684897013,
+      1.8999999741485956
+    ]
+  },
+  {
+    "name": "Tray",
+    "triangles": 3000,
+    "source": "tray.glb",
+    "size_xyz_blender": [
+      0.5200000074468818,
+      0.4000000000378634,
+      0.04500000131935966
+    ]
+  },
+  {
+    "name": "Hatchet",
+    "triangles": 5250,
+    "source": "hatchet/hatchet.gltf",
+    "size_xyz_blender": [
+      0.02884056319191708,
+      0.1155631105757211,
+      0.31999998689353415
+    ]
+  },
+  {
+    "name": "BloodFlask",
+    "triangles": 12000,
+    "source": "leather.glb",
+    "size_xyz_blender": [
+      0.21732844419575148,
+      0.18757864321821494,
+      0.279999997793267
+    ]
+  },
+  {
+    "name": "CocktailShaker",
+    "triangles": 8587,
+    "source": "379336c0082e4c42ab2ae009ed92f563.glb",
+    "size_xyz_blender": [
+      0.06491044142717173,
+      0.07246527413156456,
+      0.1800000029826398
+    ]
+  }
+]

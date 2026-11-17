@@ -26,10 +26,11 @@ namespace Zombar
         public Vector3 ReceivePosition => new Vector3(transform.position.x, 1.3f, 0.05f);
         public bool IntersectsStrike(Vector3 from, Vector3 to)
         {
-            Vector3 head = transform.position + Vector3.up * (giant ? 1.95f : 1.55f) + Vector3.back * 0.18f;
+            // The titan's chest is reachable even when its head is above the player.
+            Vector3 head = transform.position + Vector3.up * (giant ? 1.65f : 1.55f) + Vector3.back * (giant ? .35f : .18f);
             Vector3 segment = to - from;
             float t = segment.sqrMagnitude < 0.00001f ? 0 : Mathf.Clamp01(Vector3.Dot(head - from, segment) / segment.sqrMagnitude);
-            return Vector3.Distance(from + segment * t, head) < 0.32f;
+            return Vector3.Distance(from + segment * t, head) < (giant ? .55f : .32f);
         }
         public void Punch() { ZombieBarGame.Instance?.PhysicalPunch(id); }
         public void SetAngry(bool angry) { if (animator != null) animator.SetBool("Angry", angry); }
