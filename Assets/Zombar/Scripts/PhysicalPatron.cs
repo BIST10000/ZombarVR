@@ -8,6 +8,21 @@ namespace Zombar
         public static readonly List<PhysicalPatron> All = new List<PhysicalPatron>();
         public string id;
         public bool giant;
+        public int order;
+        private Vector3 destination;
+        public bool Approaching { get; private set; }
+
+        public void Enter(Vector3 place, bool walk)
+        {
+            destination = place;
+            Approaching = walk;
+            if (walk) transform.position = place + Vector3.forward * 3.8f;
+            var body = gameObject.AddComponent<CapsuleCollider>();
+            body.height = giant ? 2.85f : 1.68f;
+            body.radius = giant ? .46f : .23f;
+            body.center = Vector3.up * (body.height / 2);
+        }
+
         public bool Defeated { get; private set; }
         private Animator animator;
         private float harvest;
@@ -51,6 +66,11 @@ namespace Zombar
         }
         private void Update()
         {
+            if (Approaching && !Defeated)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * (giant ? .62f : .9f));
+                Approaching = transform.position != destination;
+            }
             if (Defeated)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, originalRotation * Quaternion.Euler(-65, 0, 10), Time.deltaTime * 3f);

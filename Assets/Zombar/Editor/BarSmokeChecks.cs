@@ -153,6 +153,10 @@ namespace ZombarEditor
                 game.RestartRound();
                 Check(!game.GameOver && patrons.Count == 2, "new shift playable");
                 passed.Add("Game over and restart");
+                var music = GameObject.Find("Музыка бара").GetComponent<AudioSource>();
+                Check(music.clip != null && music.clip.length > 1 && music.loop && music.playOnAwake && music.spatialBlend == 0, "background track configured");
+                Check(Array.FindAll(UnityEngine.Object.FindObjectsByType<AudioSource>(), a => a.clip == music.clip).Length == 1, "new shift has a single music source");
+                passed.Add("Looping stereo bar music survives shift restart · " + music.clip.length.ToString("F1") + " s");
             }
             finally { game.RestartRound(); PhysicalBar.Instance?.ResetProps(); }
             string result = "PASS " + passed.Count + " scenarios\n" + string.Join("\n", passed);
@@ -163,3 +167,4 @@ namespace ZombarEditor
         }
     }
 }
+

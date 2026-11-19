@@ -29,11 +29,11 @@ namespace Zombar
             display.color = new Color(1,.9f,.65f);
             var cup = PhysicalBar.Instance.shaker.transform;
             eyeVisual = PhysicalBar.MakeVisual("Eye",cup,Vector3.one,Color.white);
-            eyeVisual.transform.localPosition = new Vector3(-.018f,.21f,0);
-            eyeVisual.transform.localScale = Vector3.one * .6f;
+            eyeVisual.transform.localPosition = new Vector3(-.018f,.217f,-.01f);
+
             fleshVisual = PhysicalBar.MakeVisual("Flesh",cup,Vector3.one,Color.white);
-            fleshVisual.transform.localPosition = new Vector3(.018f,.21f,0);
-            fleshVisual.transform.localScale = Vector3.one * .5f;
+            fleshVisual.transform.localPosition = new Vector3(.006f,.205f,.009f);
+
             liquid = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             Destroy(liquid.GetComponent<Collider>());
             liquid.transform.SetParent(cup,false);
@@ -75,12 +75,12 @@ namespace Zombar
                 cup.Body.isKinematic = false;
                 if (!ZombieBarGame.Instance.GameOver && cup.blood + cup.eyes + cup.flesh > 0) PhysicalBar.Instance.FinishMix(cup);
             }
-            display.text = Running ? "СМЕШИВАЕТСЯ…" : cup.recipe >= 0 ? "ГОТОВО · СНИМИТЕ СТАКАН" :
+            display.text = Running ? "СМЕШИВАЕТСЯ…" : cup.recipe >= 0 ? "ГОТОВО · ПОДНЕСИТЕ БОКАЛ" :
                 $"Кровь {cup.blood} · глаз {cup.eyes} · плоть {cup.flesh}\nКнопка справа — смешать";
             int count = cup.blood + cup.eyes + cup.flesh;
             if (count > lastCount) { added = "ИНГРЕДИЕНТ ДОБАВЛЕН"; addedUntil = Time.time + 1.5f; }
             lastCount = count;
-            if (count == 0) addedUntil = 0;
+            if (count == 0) { addedUntil = 0; display.text = ""; }
             if (Time.time < addedUntil) display.text = added + "\n" + display.text;
             eyeVisual.SetActive(cup.eyes > 0 && cup.recipe < 0);
             fleshVisual.SetActive(cup.flesh > 0 && cup.recipe < 0);
@@ -95,3 +95,4 @@ namespace Zombar
         }
     }
 }
+

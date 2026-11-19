@@ -89,6 +89,13 @@ namespace ZombarEditor
             image.Apply();
             File.WriteAllBytes("Builds/Validation/cellar-in-game.png",image.EncodeToPNG());
             cam.fieldOfView = 62;
+            cam.transform.position = new Vector3(0,1.68f,-1.3f);
+            cam.transform.LookAt(new Vector3(0,1.5f,-4.2f));
+            cam.Render();
+            RenderTexture.active = target;
+            image.ReadPixels(new Rect(0,0,target.width,target.height),0,0);
+            image.Apply();
+            File.WriteAllBytes("Builds/Validation/rear-wall.png",image.EncodeToPNG());
             cam.transform.position = new Vector3(0,1.9f,-3.3f);
             cam.transform.LookAt(new Vector3(.15f,1.65f,.55f));
             cam.Render();
@@ -96,8 +103,53 @@ namespace ZombarEditor
             image.ReadPixels(new Rect(0,0,target.width,target.height),0,0);
             image.Apply();
             File.WriteAllBytes("Builds/Validation/titan-and-patron.png",image.EncodeToPNG());
+            cam.transform.position = new Vector3(-2.85f,1.63f,-2.6f);
+            cam.transform.LookAt(new Vector3(.2f,1f,1.4f));
+            cam.Render(); RenderTexture.active = target;
+            image.ReadPixels(new Rect(0,0,target.width,target.height),0,0);
+            image.Apply();
+            File.WriteAllBytes("Builds/Validation/taproom-wide.png",image.EncodeToPNG());
+            cam.transform.position = new Vector3(.20f,1.76f,1.08f);
+            cam.transform.LookAt(new Vector3(.15f,2.48f,6.08f));
+            cam.fieldOfView=65;
+            cam.Render(); RenderTexture.active=target;
+            image.ReadPixels(new Rect(0,0,target.width,target.height),0,0);image.Apply();
+            File.WriteAllBytes("Builds/Validation/patron-wall.png",image.EncodeToPNG());
             CaptureProps(cam,target);
             CaptureGrips(cam,target);
+            var sheet = new Texture2D(1080,540,TextureFormat.RGB24,false);
+            int column = 0;
+            foreach (var name in new[] {"Eye","Flesh"})
+            {
+                var visual = UnityEngine.Object.Instantiate(Resources.Load<GameObject>("PhysicalBar/Props/"+name),
+                    new Vector3(.75f,1.255f,-.19f),Quaternion.identity);
+                var ingredientCenter = visual.GetComponentInChildren<Renderer>().bounds.center;
+                cam.fieldOfView = 40;
+                cam.transform.position = ingredientCenter + new Vector3(.01f,.10f,-.18f) * (name=="Eye"?.52f:.84f);
+                cam.transform.LookAt(ingredientCenter);
+                cam.Render(); RenderTexture.active = target;
+                sheet.ReadPixels(new Rect((target.width-540)/2,(target.height-540)/2,540,540),column++*540,0);
+                UnityEngine.Object.DestroyImmediate(visual);
+            }
+            sheet.Apply();
+            File.WriteAllBytes("Builds/Validation/ingredients.png",sheet.EncodeToPNG());
+            UnityEngine.Object.DestroyImmediate(sheet);
+            var cup = Zombar.PhysicalBar.Instance.shaker;
+            var lastCupPosition = cup.transform.position;
+            var lastCupRotation = cup.transform.rotation;
+            cup.transform.SetPositionAndRotation(cup.home, Quaternion.identity);
+            var demoEye = UnityEngine.Object.Instantiate(Resources.Load<GameObject>("PhysicalBar/Props/Eye"),cup.home + new Vector3(.075f,0,-.05f),Quaternion.identity);
+            var demoFlesh = UnityEngine.Object.Instantiate(Resources.Load<GameObject>("PhysicalBar/Props/Flesh"),cup.home + new Vector3(.132f,0,-.05f),Quaternion.identity);
+            cam.transform.position = cup.home + new Vector3(.17f,.32f,-.47f);
+            cam.transform.LookAt(cup.home + new Vector3(.052f,.098f,0));
+            cam.fieldOfView = 39;
+            cam.Render(); RenderTexture.active = target;
+            image.ReadPixels(new Rect(0,0,target.width,target.height),0,0);
+            image.Apply();
+            File.WriteAllBytes("Builds/Validation/ingredient-scale.png",image.EncodeToPNG());
+            cup.transform.SetPositionAndRotation(lastCupPosition,lastCupRotation);
+            UnityEngine.Object.DestroyImmediate(demoEye);
+            UnityEngine.Object.DestroyImmediate(demoFlesh);
             foreach (var label in lettering) label.GetComponent<Renderer>().enabled = true;
             for (int i = 0; i < canvases.Length; i++) canvases[i].enabled = canvasStates[i];
             cam.targetTexture = null;
@@ -184,6 +236,9 @@ namespace ZombarEditor
 
     }
 }
+
+
+
 
 
 

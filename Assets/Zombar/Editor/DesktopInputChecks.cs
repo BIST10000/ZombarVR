@@ -57,12 +57,46 @@ namespace ZombarEditor
                 Check(Vector3.Dot(right.transform.up,Vector3.up)<.2f,"F reaches pouring tilt");
                 Send(mouse,new MouseState());Tick(right);
                 Check(!bottle.IsHeld&&!bottle.Body.isKinematic,"LMB release restores bottle physics");
+                var cup = PhysicalBar.Instance.shaker;
+                var simulation = Physics.simulationMode;
+                try
+                {
+                    Send(keyboard,new KeyboardState(Key.LeftCtrl));
+                    for (int n=0;n<120;n++) Tick(input);
+                    Check(camera.transform.position.y < pos.y+.65f,"crouch lowers eye height");
+                    camera.transform.localRotation = Quaternion.Euler(48,0,0);
+                    Tick(right);
+                    Physics.simulationMode = SimulationMode.Script;
+                    var drop = right.transform.position;
+                    drop.y = pos.y+.45f;
+                    cup.transform.SetPositionAndRotation(drop,Quaternion.identity);
+                    cup.Body.position = drop;
+                    cup.Body.rotation = Quaternion.identity;
+                    Physics.SyncTransforms();
+                    for (int n=0;n<90;n++) Physics.Simulate(Time.fixedDeltaTime);
+                    Check(cup.Body.position.y < pos.y+.16f,"mixer cup falls to the floor");
+                    Send(mouse,new MouseState().WithButton(MouseButton.Left)); Tick(right);
+                    Check(right.Held == cup,"crouched desktop hand grips fallen cup");
+                    Send(keyboard,new KeyboardState());
+                    for (int n=0;n<120;n++)
+                    {
+                        Tick(input); Tick(right); cup.SendMessage("FixedUpdate");
+                        Physics.Simulate(Time.fixedDeltaTime);
+                    }
+                    Check(camera.transform.position.y > pos.y+1.6f && cup.Body.position.y > pos.y+.65f,"stand and lift cup from floor");
+                }
+                finally
+                {
+                    cup.ResetHome();
+                    Physics.simulationMode = simulation;
+                    camera.transform.localRotation = cameraRot;
+                }
                 Send(keyboard,new KeyboardState(Key.Tab));Tick(input);
                 Check(BarPlayerInput.DesktopHand==XRNode.LeftHand,"Tab selects the other hand");
                 Send(keyboard,new KeyboardState());Tick(right);Tick(left);
                 Check(left.GetComponentsInChildren<Renderer>().Any(r=>r.enabled)&&
                     !right.GetComponentsInChildren<Renderer>().Any(r=>r.enabled),"Selected desktop hand is tracked and visible");
-                return "Desktop input: WASD movement, mouse look, physical bottle grab/release, F tilt and Tab hand switching";
+                return "Desktop input: crouch, grip fallen mixer cup, stand and lift, WASD movement, mouse look, physical bottle grab/release, F tilt and Tab hand switching";
             }
             finally
             {

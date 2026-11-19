@@ -57,15 +57,37 @@ namespace ZombarEditor
                 }
                 shaker.ResetHome(); glass.ResetHome();
                 var intake = shaker.transform.position + Vector3.up * .25f;
+                foreach (var kind in new[] { PropKind.Eye, PropKind.Flesh })
+                {
+                    var ingredient = PhysicalBar.MakeProp(kind, intake + Vector3.right);
+                    var shape = ingredient.GetComponent<BoxCollider>();
+                    float expected = kind == PropKind.Eye ? .030f : .065f;
+                    Check(Mathf.Abs(shape.size.x - expected) < .002f, "ingredient width and collision " + kind);
+                    ingredient.gameObject.SetActive(false);
+                    UnityEngine.Object.Destroy(ingredient.gameObject);
+                }
                 bar.SpawnIngredient(PropKind.Eye, intake);
                 typeof(PhysicalBar).GetMethod("Update",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(bar,null);
                 Check(shaker.eyes == 1, "released eye enters visible intake through runtime Update");
                 var bottle = BarProp.All.First(p => p.kind == PropKind.BloodBottle);
                 bottle.Grab(hand);
-                bottle.transform.rotation = Quaternion.Euler(0,0,115);
-                bottle.transform.position = shaker.transform.position + Vector3.up * .34f - bottle.transform.up * .28f;
+                bottle.transform.rotation = Quaternion.identity;
+                bottle.transform.position = intake + Vector3.right * .12f - Vector3.up * .1f;
+                Physics.SyncTransforms();
                 typeof(PhysicalBar).GetMethod("Update",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(bar,null);
-                Check(shaker.blood == 1 && shaker.eyes == 1, "tilted held bottle pours into shaker");
+                Check(shaker.blood == 1 && shaker.eyes == 1, "upright blood bottle adds one dose beside cup");
+                typeof(PhysicalBar).GetMethod("Update",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(bar,null);
+                Check(shaker.blood == 1, "holding bottle in range cannot double dose");
+                bottle.transform.position += Vector3.right * .5f;
+                Physics.SyncTransforms();
+                typeof(PhysicalBar).GetMethod("Update",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(bar,null);
+                bottle.transform.position -= Vector3.right * .5f;
+                Physics.SyncTransforms();
+                typeof(PhysicalBar).GetMethod("Update",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(bar,null);
+                Check(shaker.blood == 2, "second approach dispenses second portion");
+                shaker.blood = 1;
+                foreach (string oldName in new[] {"Кровавый флип","Гнилой сауэр","Глазной хайбол"})
+                    Check(GameObject.Find("Ингредиент · " + oldName) == null,"obsolete menu sphere removed");
                 bottle.ResetHome();
                 var mixer = bar.GetComponent<BarMixer>();
                 Check(mixer.Press(), "button starts motor");
@@ -73,6 +95,26 @@ namespace ZombarEditor
                 typeof(BarMixer).GetField("finishesAt",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(mixer,Time.time - .01f);
                 typeof(BarMixer).GetMethod("Update",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(mixer,null);
                 Check(shaker.recipe == 0, "motor prepares first order");
+                var tick = typeof(PhysicalBar).GetMethod("Update",BindingFlags.Instance|BindingFlags.NonPublic);
+                glass.Grab(hand);
+                glass.transform.position = shaker.transform.position + Vector3.right;
+                Physics.SyncTransforms();
+                tick.Invoke(bar,null);
+                Check(glass.recipe == -1 && shaker.recipe == 0, "distant glass stays empty");
+                glass.transform.position = shaker.transform.position + Vector3.right * .12f;
+                Physics.SyncTransforms();
+                tick.Invoke(bar,null);
+                Check(glass.recipe == 0 && shaker.recipe == -1, "held glass fills from upright stationary cup");
+                glass.ResetHome();
+                shaker.recipe = 1;
+                shaker.Grab(hand);
+                shaker.transform.position = glass.transform.position + Vector3.right * .12f;
+                Physics.SyncTransforms();
+                tick.Invoke(bar,null);
+                Check(glass.recipe == 1 && shaker.recipe == -1, "held upright cup fills stationary glass");
+                glass.ResetHome();
+                shaker.ResetHome();
+                shaker.recipe = 0;
                 shaker.Grab(hand);
                 shaker.transform.rotation = Quaternion.Euler(0,0,115);
                 shaker.transform.position = glass.transform.position + Vector3.up * .3f - shaker.transform.up * .25f;
@@ -87,6 +129,11 @@ namespace ZombarEditor
                 Check(shaker.eyes == 0 && shaker.recipe == -1, "invalid mixture discarded by pouring over sink");
                 shaker.ResetHome();
                 var room = GameObject.Find("Bar enclosure");
+                var incoming = PhysicalPatron.All.First(p => p.giant);
+                Check(incoming.Approaching && incoming.transform.position.z > 1, "titan enters from the hall");
+                Check(incoming.GetComponent<CapsuleCollider>().enabled, "visitor has solid body");
+                foreach (var prop in BarProp.All)
+                    Check(prop.GetComponentsInChildren<Collider>().Any(c => c.enabled && !c.isTrigger), "solid prop " + prop.kind);
                 Check(room != null && room.GetComponentsInChildren<BoxCollider>().Length == 5, "solid room envelope");
                 Check(Physics.Raycast(new Vector3(0,1,-2),Vector3.back,3,~0,QueryTriggerInteraction.Ignore), "rear wall blocks exit");
                 Check(Physics.Raycast(new Vector3(-5,1,-2),Vector3.left,3,~0,QueryTriggerInteraction.Ignore), "left wall blocks exit");

@@ -9,6 +9,8 @@ namespace Zombar
     {
         private Camera view;
         private float pitch;
+        private float desktopHeight = 1.64f;
+        private float seatedOffset;
         private CharacterController walker;
         public static XRNode DesktopHand { get; private set; } = XRNode.RightHand;
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -16,12 +18,33 @@ namespace Zombar
         private void Awake() { view = GetComponentInChildren<Camera>(); pitch = view != null ? view.transform.localEulerAngles.x : 0; }
         private void Update()
         {
-            if (XRSettings.isDeviceActive || view == null) return;
+            if (view == null) return;
+            if (XRSettings.isDeviceActive)
+            {
+                var controller = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
+                bool crouch = controller.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primary2DAxisClick, out bool click) && click;
+                float nextOffset = Mathf.MoveTowards(seatedOffset, crouch ? -.75f : 0f, Time.unscaledDeltaTime * 2f);
+                transform.position += Vector3.up * (nextOffset - seatedOffset);
+                seatedOffset = nextOffset;
+                return;
+            }
+            transform.position -= Vector3.up * seatedOffset;
+            seatedOffset = 0;
+            var keyboard = Keyboard.current;
+            bool lowered = keyboard != null && (keyboard.leftCtrlKey.isPressed || keyboard.cKey.isPressed);
+            desktopHeight = Mathf.MoveTowards(desktopHeight, lowered ? .60f : 1.64f, Time.deltaTime * 3f);
+            if (walker != null)
+            {
+                walker.height = desktopHeight;
+                walker.center = Vector3.up * (desktopHeight * .5f + .03f);
+            }
             if (view.transform.parent != null && view.transform.parent != transform)
             {
                 var offset = view.transform.parent;
-                offset.position += Vector3.up * (transform.position.y + 1.64f - view.transform.position.y);
+                offset.position += Vector3.up * (transform.position.y + desktopHeight - view.transform.position.y);
             }
+            else if (view.transform != transform)
+                view.transform.position += Vector3.up * (transform.position.y + desktopHeight - view.transform.position.y);
             if (Keyboard.current == null) return;
             var keys = Keyboard.current;
             var mouse = Mouse.current;
@@ -45,19 +68,22 @@ namespace Zombar
                 if (walker == null)
                 {
                     walker = GetComponent<CharacterController>() ?? gameObject.AddComponent<CharacterController>();
-                    walker.height = 1.6f;
+                    walker.height = desktopHeight;
                     walker.radius = .11f;
-                    walker.center = Vector3.up * .83f;
+                    walker.center = Vector3.up * (desktopHeight * .5f + .03f);
                     walker.skinWidth = .012f;
                     walker.stepOffset = .04f;
                 }
                 walker.Move(direction.normalized * (Time.deltaTime * 1.4f));
             }
             var game = ZombieBarGame.Instance;
-            if (game != null && game.Hud != null)
+            if (game != null && game.Hud != null && Time.timeSinceLevelLoad < 12f)
                 game.Hud.SetHint((DesktopHand == XRNode.RightHand ? "Правая рука" : "Левая рука") +
-                    " · Tab — сменить · ЛКМ — хват · колесо — дальность · F — наклон · пробел — трясти");
+                    "  |  ЛКМ взять  ·  F наклон  ·  Ctrl присесть  ·  Tab сменить руку");
         }
     }
 }
+
+
+
 

@@ -24,14 +24,17 @@ namespace Zombar
             int start=Time.frameCount;
             for(int i=0;i<60;i++)yield return null;
             var stream=GameObject.Find("Струя крови")?.GetComponent<LineRenderer>();
-            bool okay=exceptions==0&&stream!=null&&stream.sharedMaterial!=null&&
+            var music=GameObject.Find("Музыка бара")?.GetComponent<AudioSource>();
+            bool musicPlaying=music!=null && music.isPlaying && music.timeSamples>0;
+            bool okay=musicPlaying&&exceptions==0&&stream!=null&&stream.sharedMaterial!=null&&
                 Camera.main!=null&&PhysicalBar.Instance!=null&&ZombieBarGame.Instance!=null&&
                 BarProp.All.Count>=12&&PhysicalPatron.All.Count>=2&&!XRSettings.isDeviceActive&&Time.frameCount>start+40;
             string folder=Path.GetFullPath(Path.Combine(Application.dataPath,".."));
             File.WriteAllText(Path.Combine(folder,"runtime-check.txt"),(okay?"PASS":"FAIL")+
                 " desktop player without VR\nFrames: "+(Time.frameCount-start)+"\nProps: "+BarProp.All.Count+
                 "\nPatrons: "+PhysicalPatron.All.Count+"\nXR active: "+XRSettings.isDeviceActive+
-                "\nExceptions: "+exceptions+"\nBlood stream material: "+(stream!=null&&stream.sharedMaterial!=null));
+                "\nExceptions: "+exceptions+"\nBlood stream material: "+(stream!=null&&stream.sharedMaterial!=null)+
+                "\nMusic playing: "+musicPlaying+"\nMusic sample: "+(music!=null?music.timeSamples:0));
             if(okay)
             {
                 var camera=Camera.main;var target=new RenderTexture(1440,900,24);

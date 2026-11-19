@@ -22,7 +22,12 @@ namespace Zombar
         {
             if (index < 0 || index >= Portions.Length) return "";
             var p = Portions[index];
-            return $"Кровь ×{p.x} · глаз ×{p.y} · плоть ×{p.z}";
+            var parts = new System.Collections.Generic.List<string>(3);
+            if (p.x > 0) parts.Add($"Кровь ×{p.x}");
+            if (p.y > 0) parts.Add($"Глаз ×{p.y}");
+            if (p.z > 0) parts.Add($"Плоть ×{p.z}");
+            return string.Join("  ·  ", parts);
         }
     }
 }
+

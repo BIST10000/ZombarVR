@@ -1,0 +1,9 @@
+Blue Eyeball (Free) by Tom Hodes
+https://sketchfab.com/3d-models/blue-eyeball-free-18915d2f17a2431fbefeb3eaf4411f16
+
+Meat raw Rib game ready model by KIMMEN_AWIP
+https://sketchfab.com/3d-models/meat-raw-rib-game-ready-model-7239ceff0bbf4510afe08656553978e0
+
+Both assets are licensed under Creative Commons Attribution 4.0 International.
+https://creativecommons.org/licenses/by/4.0/
+Original meshes and textures from the public Objaverse archive. Adapted for Zombar by converting the meshes, adjusting orientation and scale, resizing textures and setting up Unity URP materials.

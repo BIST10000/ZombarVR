@@ -43,7 +43,7 @@ namespace ZombarEditor
             var workbench = new GameObject("Physical Workbench");
             var bar = workbench.AddComponent<PhysicalBar>();
             bar.workSurface = workbench.transform;
-            AddProp(bar, PropKind.BloodBottle, new Vector3(-0.95f, 1.23f, -0.5f), "КРОВЬ · наклоните над шейкером");
+            AddProp(bar, PropKind.BloodBottle, new Vector3(-0.95f, 1.23f, -0.5f), "КРОВЬ · поднесите флягу к кольцу чаши");
             bar.shaker = AddProp(bar, PropKind.Shaker, new Vector3(-0.1f, 1.23f, -0.42f), "ШЕЙКЕР · ингредиенты + 5 встряхиваний");
             AddProp(bar, PropKind.Glass, new Vector3(0.35f, 1.23f, -0.45f), "СТАКАН · наполните и передайте клиенту");
             AddProp(bar, PropKind.Cleaver, new Vector3(0.7f, 1.24f, -0.5f), "ТЕСАК · разделать поверженного зомби");
@@ -225,6 +225,7 @@ namespace ZombarEditor
         }
     }
 }
+
 
 
 

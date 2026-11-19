@@ -1,0 +1,7 @@
+Wood Floor Deck — Poly Haven. CC0 1.0, https://polyhaven.com/a/wood_floor_deck
+Used diffuse, OpenGL normal and roughness maps. Packed roughness for URP.
+Desk Bell — ClintonAbbott.Art. CC BY 4.0, https://sketchfab.com/3d-models/cc21b304c4bb4750bdde7a8fb538b116
+Dirty Rag — bimadwiananto. CC BY 4.0, https://sketchfab.com/3d-models/0aeaa109e7bd49e19a6bd4963cd08aad
+Original meshes from public Objaverse archive, converted, resized and adapted to Unity URP.
+https://creativecommons.org/licenses/by/4.0/
+Red Brick Plaster Patch 02 — Poly Haven. CC0 1.0, https://polyhaven.com/a/red_brick_plaster_patch_02 . Diffuse and OpenGL normal maps used for the guest wall.

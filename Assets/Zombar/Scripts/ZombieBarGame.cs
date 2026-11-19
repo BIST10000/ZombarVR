@@ -61,7 +61,7 @@ namespace Zombar
             get
             {
                 foreach (var patron in patrons)
-                    if (!patron.corpse) return System.Array.IndexOf(recipes, patron.recipe);
+                    if (!patron.corpse && !patron.root.GetComponent<PhysicalPatron>().Approaching) return System.Array.IndexOf(recipes, patron.recipe);
                 return -1;
             }
         }
@@ -307,7 +307,7 @@ namespace Zombar
             for (int i = patrons.Count - 1; i >= 0; i--)
             {
                 Patron patron = patrons[i];
-                if (patron.corpse)
+                if (patron.corpse || patron.root.GetComponent<PhysicalPatron>().Approaching)
                     continue;
                 if (!patron.angry)
                 {
@@ -411,6 +411,9 @@ namespace Zombar
             float x = leftSlotUsed ? (giant ? 1.05f : 0.72f) : -0.72f;
             Vector3 position = new Vector3(x, 0f, 0.55f);
             GameObject body = CreatePatronModel(id, position, giant);
+            var visitor = body.GetComponent<PhysicalPatron>();
+            visitor.order = recipe;
+            visitor.Enter(position, patrons.Count > 0 || servedCount > 0);
             Patron patron = new Patron
             {
                 id = id,
@@ -437,9 +440,9 @@ namespace Zombar
 
             var actor = root.AddComponent<PhysicalPatron>();
             actor.id = id; actor.giant = giant;
-            var sign = CreateText("Заказ", root.transform, new Vector3(0, giant ? 3.12f : 1.92f, 0), 0.03f, 40, Color.white);
+            var sign = CreateText("Заказ", root.transform, new Vector3(0, giant ? 2.15f : 1.78f, 0), 0.03f, 40, Color.white);
             var layout = sign.GetComponent<BarLabelLayout>();
-            layout.width = 0.95f; layout.height = 0.28f;
+            layout.width = 0.60f; layout.height = 0.12f;
             pendingSigns[id] = sign;
             return root;
         }
@@ -456,7 +459,7 @@ namespace Zombar
             if (patron.sign == null) return;
             string mood = patron.angry ? "БУЯНИТ" : "ЖДЁТ";
             string countdown = patron.angry ? "" : " " + Mathf.CeilToInt(patron.patience) + "с";
-            patron.sign.text = (patron.giant ? "ТИТАН · " : "") + patron.recipe + "\n" + CocktailRecipes.Formula(System.Array.IndexOf(recipes, patron.recipe)) + "\n" + mood + countdown;
+            patron.sign.text = (patron.giant ? "ТИТАН · " : "") + patron.recipe + "\n" + mood + countdown;
             patron.sign.color = patron.angry ? new Color(1f, 0.35f, 0.24f) : Color.white;
         }
 
@@ -974,5 +977,6 @@ namespace Zombar
         }
     }
 }
+
 
 

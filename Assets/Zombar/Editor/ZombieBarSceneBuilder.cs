@@ -225,7 +225,6 @@ namespace ZombarEditor
                 float x = -1.65f + i * 1.65f;
                 Cube("Поднос · " + names[i], new Vector3(x, 1.25f, 0.1f), new Vector3(1.25f, 0.08f, 0.57f), tray);
                 Primitive("Бокал · " + names[i], PrimitiveType.Cylinder, null, new Vector3(x, 1.55f, 0.11f), new Vector3(0.18f, 0.22f, 0.18f), MaterialFor(colors[i], 0.22f));
-                Primitive("Ингредиент · " + names[i], PrimitiveType.Sphere, null, new Vector3(x + 0.28f, 1.46f, -0.01f), new Vector3(0.13f, 0.13f, 0.13f), MaterialFor(colors[i]));
                 Target(names[i] + "\n" + parts[i], actions[i], new Vector3(x, 0.35f, -0.5f), colors[i], new Vector3(1.45f, 0.25f, 0.13f));
             }
             Label("СМЕШАТЬ КОКТЕЙЛЬ", new Vector3(0f, 1.72f, -0.1f), 0.11f, new Color(0.75f, 0.95f, 0.88f), 0f);

@@ -28,10 +28,42 @@ namespace ZombarEditor
             var scene = EditorSceneManager.OpenScene("Assets/Scenes/ZombieBar.unity");
             if (UnityEngine.Object.FindAnyObjectByType<PhysicalBar>() == null)
                 throw new BuildFailedException("Build the physical bar scene first: НЕКРО-ПАБ/Построить физический бар.");
+            IngredientModels.Prepare();
+            foreach (string recipe in new[] {"Кровавый флип", "Гнилой сауэр", "Глазной хайбол"})
+            {
+                var marker = GameObject.Find("Ингредиент · " + recipe);
+                if (marker != null) UnityEngine.Object.DestroyImmediate(marker);
+            }
             FinishWorkbench();
             CompleteRoom();
             InstallMixer();
+            TaproomArt.Apply();
+            PrepareMusic();
             EditorSceneManager.SaveScene(scene);
+        }
+
+        static void PrepareMusic()
+        {
+            const string path = "Assets/Zombar/Audio/Music/Джентльмены_удачи.mp3";
+            var importer = (AudioImporter)AssetImporter.GetAtPath(path);
+            var settings = importer.defaultSampleSettings;
+            if (settings.loadType != AudioClipLoadType.Streaming)
+            {
+                settings.loadType = AudioClipLoadType.Streaming;
+                settings.compressionFormat = AudioCompressionFormat.Vorbis;
+                settings.quality = .72f;
+                importer.defaultSampleSettings = settings;
+                importer.SaveAndReimport();
+            }
+            var root = GameObject.Find("Музыка бара");
+            if (!root) root = new GameObject("Музыка бара");
+            var music = root.GetComponent<AudioSource>();
+            if (!music) music = root.AddComponent<AudioSource>();
+            music.clip = AssetDatabase.LoadAssetAtPath<AudioClip>(path);
+            music.loop = true;
+            music.playOnAwake = true;
+            music.spatialBlend = 0f;
+            music.volume = .13f;
         }
 
         static void FinishWorkbench()
@@ -102,19 +134,42 @@ namespace ZombarEditor
                 var floor = RoomPart(enclosure, "Сплошное основание", new Vector3(0,-.11f,1), new Vector3(13,.2f,11), material);
                 floor.GetComponent<Renderer>().enabled = false;
             }
+            var rear = GameObject.Find("Задняя стена за барменом");
+            if (rear != null) rear.transform.rotation = Quaternion.Euler(0,0,180);
+            if (rear != null && GameObject.Find("Отделка задней стены") == null)
+            {
+                var trim = new GameObject("Отделка задней стены").transform;
+                rear.GetComponent<Renderer>().sharedMaterial = AssetDatabase.LoadAssetAtPath<Material>("Assets/Zombar/Art/Materials/Mortuary plaster.mat");
+                var oak = AssetDatabase.LoadAssetAtPath<Material>("Assets/Zombar/Art/Materials/WeatheredWood.mat");
+                RoomPart(trim,"Деревянная обшивка",new Vector3(0,.52f,-4.19f),new Vector3(12.9f,1.04f,.10f),oak);
+                RoomPart(trim,"Карниз",new Vector3(0,1.04f,-4.12f),new Vector3(12.9f,.08f,.14f),oak);
+                for (int i=-2;i<=2;i++)
+                    RoomPart(trim,"Стойка обшивки",new Vector3(i*2.6f,2.24f,-4.18f),new Vector3(.12f,4.48f,.14f),oak);
+                foreach (float x in new[] {-2.6f,2.6f})
+                {
+                    var lamp = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(
+                        "Assets/Zombar/Resources/PhysicalBar/Environment/Lantern.prefab"),trim);
+                    lamp.transform.position = new Vector3(x,1.14f,-3.96f);
+                    RoomPart(trim,"Полка под фонарь",new Vector3(x,1.1f,-3.98f),new Vector3(.56f,.08f,.48f),oak);
+                    var glow = new GameObject("Свет фонаря").AddComponent<Light>();
+                    glow.transform.SetParent(trim,false);
+                    glow.transform.position = lamp.transform.position + new Vector3(0,.28f,.22f);
+                    glow.type = LightType.Point; glow.color = new Color(1,.66f,.37f); glow.range = 3.7f; glow.intensity = 2.2f;
+                }
+            }
             var sink = GameObject.Find("Раковина · слить смесь");
             if (sink != null) sink.transform.position = new Vector3(1.35f,1.225f,-.45f);
             foreach (var text in UnityEngine.Object.FindObjectsByType<TextMesh>())
             {
-                if (!text.text.StartsWith("РЕЦЕПТЫ")) continue;
+                if (!text.text.StartsWith("РЕЦЕПТЫ") && !text.text.StartsWith("МЕНЮ\n")) continue;
                 var menu = new System.Text.StringBuilder("МЕНЮ\n");
                 for (int i=0; i<CocktailRecipes.Names.Length; i++)
                     menu.AppendLine(CocktailRecipes.Names[i] + " — " + CocktailRecipes.Formula(i));
                 text.text = menu.ToString();
-                text.transform.position = new Vector3(-1.5f,1.88f,.1f);
+                text.transform.position = new Vector3(-2.95f,2.12f,5.97f);
                 text.transform.localScale = Vector3.one;
                 var layout = text.GetComponent<BarLabelLayout>();
-                if (layout != null) { layout.width = 1.15f; layout.height = .58f; }
+                if (layout != null) { layout.width = 1.65f; layout.height = .92f; }
             }
             var rig = UnityEngine.Object.FindAnyObjectByType<BarPlayerInput>();
             if (rig != null)
@@ -228,5 +283,10 @@ namespace ZombarEditor
         }
     }
 }
+
+
+
+
+
 
 

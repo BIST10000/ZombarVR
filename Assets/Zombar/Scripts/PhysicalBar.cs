@@ -19,6 +19,9 @@ namespace Zombar
         private float refillAt;
         private readonly List<BarProp> frameProps = new List<BarProp>();
         private LineRenderer stream;
+        private const float PourReach = .14f;
+        private BarProp filledGlass;
+        private float drinkStreamUntil;
         private BarProp selectedOffer;
         private ZombieBarGame Game => ZombieBarGame.Instance;
         public static readonly string[] Recipes = CocktailRecipes.Names;
@@ -58,7 +61,7 @@ namespace Zombar
             RefillTray();
             gameObject.AddComponent<BarWorkflow>();
             gameObject.AddComponent<BarMixer>();
-            Game?.Hud?.SetHint("Хват — взять и удерживать · наклон — налить · движение рукой — удар или работа инструментом");
+            Game?.Hud?.SetHint("Хват — взять и удерживать · поднесите бокал к чаше, чтобы налить коктейль");
         }
 
         public static GameObject MakeVisual(string model, Transform parent, Vector3 size, Color tint)
@@ -80,7 +83,7 @@ namespace Zombar
             foreach (var renderer in visual.GetComponentsInChildren<Renderer>()) bounds.Encapsulate(renderer.bounds);
             var collider = obj.AddComponent<BoxCollider>();
             collider.center = obj.transform.InverseTransformPoint(bounds.center);
-            collider.size = Vector3.Max(bounds.size, Vector3.one * 0.035f);
+            collider.size = kind == PropKind.Eye || kind == PropKind.Flesh ? bounds.size : Vector3.Max(bounds.size, Vector3.one * 0.035f);
             var rb = obj.AddComponent<Rigidbody>();
             rb.mass = kind == PropKind.Cleaver ? 0.65f : 0.18f;
             rb.isKinematic = anchored;
@@ -124,7 +127,7 @@ namespace Zombar
             if (recipe < 0) { Game?.Tell("Смесь испорчена. Переверните шейкер над раковиной справа."); return false; }
             container.recipe = recipe;
             container.quality = Game != null ? Game.PhysicalQuality : 50;
-            Game?.Tell(Recipes[recipe] + " готов. Наклоните шейкер над стаканом.");
+            Game?.Tell(Recipes[recipe] + " готов. Поднесите пустой бокал к чаше.");
             return true;
         }
 
@@ -165,13 +168,13 @@ namespace Zombar
                 if (Game.GameOver) continue;
                 if ((prop.kind == PropKind.Eye || prop.kind == PropKind.Flesh) && shaker != null && !shaker.IsHeld && !GetComponent<BarMixer>().Running &&
                     Vector3.Distance(prop.transform.position, shaker.transform.position + shaker.transform.up * 0.25f) < 0.16f && AddIngredient(shaker, prop.kind))
-                { prop.Release(Vector3.zero); lastPositions.Remove(prop); Destroy(prop.gameObject); continue; }
+                { prop.Release(Vector3.zero); lastPositions.Remove(prop); prop.gameObject.SetActive(false); Destroy(prop.gameObject); continue; }
                 if (prop.kind == PropKind.BloodBottle || prop.kind == PropKind.Shaker) ProcessPour(prop);
-                if (prop.kind == PropKind.Glass && prop.recipe >= 0)
+                if (prop.kind == PropKind.Glass && prop.recipe >= 0 && !prop.IsHeld)
                 {
                     foreach (var patron in PhysicalPatron.All.ToArray())
                     {
-                        if (patron == null || patron.Defeated || Vector3.Distance(prop.transform.position, patron.ReceivePosition) > 0.23f) continue;
+                        if (patron == null || patron.Defeated || patron.Approaching || Vector3.Distance(prop.transform.position, patron.ReceivePosition) > 0.23f) continue;
                         Game.PhysicalServe(patron.id, prop.recipe, prop.quality);
                         prop.recipe = -1; SetLiquid(prop, false); prop.Release(Vector3.zero); prop.ResetHome(); break;
                     }
@@ -200,10 +203,76 @@ namespace Zombar
                     { Game.PhysicalPurchase(selectedOffer.offer); selectedOffer.ResetHome(); selectedOffer = null; prop.ResetHome(); }
                 }
             }
+            if (filledGlass != null && Time.time < drinkStreamUntil)
+            {
+                stream.enabled = true;
+                stream.SetPosition(0, shaker.transform.TransformPoint(Vector3.up * .25f));
+                stream.SetPosition(1, filledGlass.transform.TransformPoint(Vector3.up * .14f));
+            }
+        }
+
+        private bool bloodDoseLatched;
+        private float bloodStreamUntil;
+
+        private bool DoseBloodAtCup(BarProp bottle)
+        {
+            if (shaker == null || !bottle.IsHeld)
+            {
+                bloodDoseLatched = false;
+                return false;
+            }
+            Vector3 rim = shaker.transform.TransformPoint(Vector3.up * .25f);
+            var shape = bottle.GetComponent<Collider>();
+            float gap = Vector3.Distance(rim, shape.ClosestPoint(rim));
+            if (gap > .22f)
+            {
+                bloodDoseLatched = false;
+                return false;
+            }
+            if (!bloodDoseLatched && gap <= PourReach)
+            {
+                bloodDoseLatched = true;
+                if (shaker.recipe >= 0 || GetComponent<BarMixer>().Running || shaker.blood + shaker.eyes + shaker.flesh >= 3)
+                    return true;
+                if (!Game.TakePhysicalStock(PropKind.BloodBottle))
+                {
+                    Game.Tell("Кровь закончилась. Пополните флягу у донора.");
+                    return true;
+                }
+                AddIngredient(shaker, PropKind.BloodBottle);
+                bottle.Holder.Pulse(.28f);
+                bloodStreamUntil = Time.time + .3f;
+                Game.Tell($"Кровь +1 · в чаше {shaker.blood}. Для второй порции отведите флягу и поднесите снова.");
+            }
+            if (Time.time < bloodStreamUntil)
+            {
+                stream.enabled = true;
+                stream.SetPosition(0, bottle.transform.TransformPoint(Vector3.up * .28f));
+                stream.SetPosition(1, rim);
+            }
+            return bloodDoseLatched;
         }
 
         private void ProcessPour(BarProp prop)
         {
+            if (prop.kind == PropKind.BloodBottle && DoseBloodAtCup(prop)) return;
+            if (prop.kind == PropKind.Shaker && prop.recipe >= 0)
+            {
+                var shape = prop.GetComponent<Collider>();
+                foreach (var glass in frameProps)
+                {
+                    if (glass == null || glass.kind != PropKind.Glass || glass.recipe >= 0 || !(glass.IsHeld || prop.IsHeld)) continue;
+                    var rim = glass.transform.TransformPoint(Vector3.up * .14f);
+                    if (Vector3.Distance(rim, shape.ClosestPoint(rim)) > PourReach) continue;
+                    if (TransferDrink(prop, glass))
+                    {
+                        filledGlass = glass;
+                        drinkStreamUntil = Time.time + .3f;
+                        (glass.Holder ?? prop.Holder).Pulse(.28f);
+                        return;
+                    }
+                }
+            }
             bool tilted = Vector3.Dot(prop.transform.up, Vector3.up) < 0.2f;
             if (!tilted) { prop.poured = false; return; }
             if (!prop.IsHeld || prop.poured) return;
@@ -214,9 +283,6 @@ namespace Zombar
                 if (candidate == null || candidate == prop) continue;
                 Vector3 delta = mouth - (candidate.transform.position + Vector3.up * 0.08f);
                 if (new Vector2(delta.x, delta.z).magnitude > 0.13f || delta.y < 0 || delta.y > 0.4f) continue;
-                if (prop.kind == PropKind.BloodBottle && candidate.kind == PropKind.Shaker && candidate.recipe < 0 && GetComponent<BarMixer>()?.Running != true &&
-                    candidate.blood + candidate.eyes + candidate.flesh < 3 && Game.TakePhysicalStock(PropKind.BloodBottle))
-                { AddIngredient(candidate, PropKind.BloodBottle); prop.poured = true; return; }
                 if (prop.kind == PropKind.Shaker && TransferDrink(prop, candidate)) { prop.poured = true; return; }
             }
             if (prop.kind == PropKind.BloodBottle && Game.PhysicalExtinguish(mouth)) { prop.poured = true; return; }
@@ -255,6 +321,9 @@ namespace Zombar
         }
         public void ResetProps()
         {
+            bloodDoseLatched = false;
+            bloodStreamUntil = 0;
+            filledGlass = null;
             StopAllCoroutines();
             foreach (var prop in BarProp.All.ToArray())
             {
@@ -270,4 +339,7 @@ namespace Zombar
         private void OnDestroy() { if (stream != null) { Destroy(stream.sharedMaterial); Destroy(stream.gameObject); } }
     }
 }
+
+
+
 
